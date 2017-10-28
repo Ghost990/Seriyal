@@ -13,18 +13,19 @@ class seriesCell: UITableViewCell {
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var cellTitle: UILabel!
     @IBOutlet weak var cellSummary: UILabel!
+    
     @IBOutlet weak var cellWholeView: UIView!
-    @IBOutlet weak var cellShadow: UIView!
+    
     
 
     override func awakeFromNib() {
         super.awakeFromNib()
        
-//        cellWholeView.layer.cornerRadius = 6.0
-//        cellWholeView.layer.shadowColor = UIColor.black.cgColor
-//        cellWholeView.layer.shadowOffset = CGSize(width: 0, height: 6)
-//        cellWholeView.layer.shadowOpacity = 0.2
-//        cellWholeView.layer.shadowRadius = 10
+        cellWholeView.layer.cornerRadius = 6.0
+        cellWholeView.layer.shadowColor = UIColor.black.cgColor
+        cellWholeView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        cellWholeView.layer.shadowOpacity = 0.2
+        cellWholeView.layer.shadowRadius = 4
         
 
         

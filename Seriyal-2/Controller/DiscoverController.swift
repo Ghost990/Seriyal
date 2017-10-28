@@ -22,19 +22,31 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     var testArr = ["one", "two", "three"]
     var showIdArray = [String]()
     var showImagesUrlArray = [String]()
+    var showSeasonsNumber = Int()
+    
+    // Show details for moving data
+    var tapShowTitle = ""
+    var tapShowDescription = ""
+    var tapShowId = ""
+    var tapShowFeaturedImageUrl = ""
+    var tapsShowId = ""
+    var tapShowSeasonsNumber = ""
+    var tapShowEpisodesNumber = ""
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getSeries()
         
+        resetColors()
+        getSeries()
         
         let nib = UINib(nibName: "seriesCell", bundle: nil)
         discoverTable.register(nib, forCellReuseIdentifier: "seriesCell")
         
         self.navigationController?.navigationBar.prefersLargeTitles = true
         
-        //discoverTable.separatorStyle = .none
+        discoverTable.separatorStyle = .none
         
     }
     
@@ -60,7 +72,66 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        let selectedShow = discoverMostPopular[indexPath.row]
+        tapShowFeaturedImageUrl = selectedShow.imageURL
+        tapShowDescription = selectedShow.description
+        tapShowTitle = selectedShow.title
+        tapShowId = selectedShow.id
+        
+        
+        
+        performSegue(withIdentifier: "fromShowToSingle", sender: self)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let destinationVC = segue.destination as? SingleController
+        destinationVC?.selectedShowDescription = tapShowDescription
+        destinationVC?.selectedShowFeaturedImage = tapShowFeaturedImageUrl
+        destinationVC?.selectedShowTitle = tapShowTitle
+        destinationVC?.selectedShowId = tapShowId
+        
+////        getSelectedShowInfos(showId: tapsShowId)
+//        destinationVC?.selectedShowSeasons = tapShowSeasonsNumber
+        
+        
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        resetColors()
+        
+    }
+    
+//    func getSelectedShowInfos(showId : String) {
+//
+//        let api_key = "0b4398f46941f1408547bd8c1f556294"
+//        let extrasBaseUrl = "https://api.themoviedb.org/3/tv"
+//
+//        var showExtasUrl = "\(extrasBaseUrl)/\(showId)?api_key=\(api_key)"
+//
+//        Alamofire.request(showExtasUrl).responseJSON { response in
+//
+//            if response.result.isSuccess {
+//
+//                print("Success! Got the data")
+//
+//                let seriesJSON : JSON = JSON(response.result.value!)
+//
+//                let show = Series()
+//                show.seasonsNumber = seriesJSON["number_of_seasons"].stringValue
+////                self.tapShowSeasonsNumber = seriesJSON["number_of_seasons"].stringValue
+//                self.tapShowSeasonsNumber = show.seasonsNumber
+//
+//            } else {
+//                print("Error \(String(describing: response.result.error))")
+//            }
+//
+//
+//        }
+//
+//    }
     
     
     // series data
@@ -69,7 +140,7 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         let baseUrl = "https://api.themoviedb.org/3/discover/tv?api_key="
         let imagesUrl = "https://api.themoviedb.org/3/tv/250/images?api_key=\(api_key)&language=en-US"
         let configurationUrl = "https://api.themoviedb.org/3/configuration?api_key=\(api_key)"
-        let imagesBaseUrl = "https://image.tmdb.org/t/p/w185"
+        let imagesBaseUrl = "https://image.tmdb.org/t/p/w300"
         
         let popularSeriesUrl = "\(baseUrl)\(api_key)&language=en-US&sort_by=popularity.desc&page=1&timezone=Europe%2FBudapest&include_null_first_air_dates=false"
         
@@ -90,6 +161,11 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                     show.imageURL = String(describing: URL(string: imagesBaseUrl + result["poster_path"].stringValue)!)
                     show.description = result["overview"].stringValue
                     
+//                    for season in seasonsArray! {
+//                        var seasonCount = season[].count
+//                        self.showSeasonsNumber = seasonCount
+//                    }
+//
                     //show.imageURL = imagesBaseUrl + result["poster_path"].stringValue
                     print(show.imageURL)
                     
@@ -129,6 +205,44 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
+    func colorSetter() {
+        
+        let showFeaturedImageUrl = URL(string: tapShowFeaturedImageUrl)
+        
+        
+        ImageDownloader.default.downloadImage(with: showFeaturedImageUrl!, options: [], progressBlock: nil) {
+            (image, error, url, data) in
+            
+            image?.getColors(scaleDownSize: CGSize.init(width: 100, height: 100), completionHandler: { (colors) in
+                
+                UIView.animate(withDuration: 0.6, delay: 0.0, options:[], animations: {
+                    
+                    let destinationVC = SingleController()
+                    destinationVC.singleViewDescription.textColor = colors.primary
+                    
+                    //destinationVC.singleViewDescription.textColor = colors.primary
+                   
+                    
+                }, completion:nil)
+                
+                let color = colors.primary
+                
+//                if (color?.isLight)! {
+//                    destinationVC?.singleShowNextEpisode.setTitleColor(UIColor.black, for: .normal)
+//                } else {
+//                    destinationVC?.singleShowNextEpisode.setTitleColor(UIColor.white, for: .normal)
+//                }
+            })
+        
+        }
+    }
+    
+    func resetColors() {
+        
+        self.navigationController?.navigationBar.tintColor = UIColor.black
+        self.navigationController?.navigationBar.barTintColor = UIColor.white
+        
+    }
     
     
     

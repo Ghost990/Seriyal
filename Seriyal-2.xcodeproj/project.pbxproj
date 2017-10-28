@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3AE83D6A70F10A583939E684 /* Pods_Seriyal_2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B321766066DCEA50E825A3DF /* Pods_Seriyal_2.framework */; };
+		E513E6861FA49B630076D59A /* SingleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513E6851FA49B630076D59A /* SingleController.swift */; };
+		E5374F151FA4B04B00363BD5 /* Colorize.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5374F141FA4B04B00363BD5 /* Colorize.swift */; };
 		E55E31B01F9E44A8006DD337 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55E31AF1F9E44A8006DD337 /* AppDelegate.swift */; };
 		E55E31B21F9E44A8006DD337 /* DiscoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55E31B11F9E44A8006DD337 /* DiscoverController.swift */; };
 		E55E31B51F9E44A8006DD337 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E55E31B31F9E44A8006DD337 /* Main.storyboard */; };
@@ -25,6 +27,8 @@
 		52B83E927F90B567F4D17E03 /* Pods-Seriyal-2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Seriyal-2.release.xcconfig"; path = "Pods/Target Support Files/Pods-Seriyal-2/Pods-Seriyal-2.release.xcconfig"; sourceTree = "<group>"; };
 		A8DA2000A17CBB8A7EF9A98A /* Pods-Seriyal-2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Seriyal-2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Seriyal-2/Pods-Seriyal-2.debug.xcconfig"; sourceTree = "<group>"; };
 		B321766066DCEA50E825A3DF /* Pods_Seriyal_2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Seriyal_2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E513E6851FA49B630076D59A /* SingleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleController.swift; sourceTree = "<group>"; };
+		E5374F141FA4B04B00363BD5 /* Colorize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colorize.swift; sourceTree = "<group>"; };
 		E55E31AC1F9E44A8006DD337 /* Seriyal-2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Seriyal-2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E55E31AF1F9E44A8006DD337 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E55E31B11F9E44A8006DD337 /* DiscoverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverController.swift; sourceTree = "<group>"; };
@@ -117,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				E55E31B11F9E44A8006DD337 /* DiscoverController.swift */,
+				E513E6851FA49B630076D59A /* SingleController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -126,6 +131,7 @@
 			children = (
 				E56D76431F9E472800212318 /* seriesCell.swift */,
 				E56D76441F9E472800212318 /* seriesCell.xib */,
+				E5374F141FA4B04B00363BD5 /* Colorize.swift */,
 			);
 			path = extend;
 			sourceTree = "<group>";
@@ -291,11 +297,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5374F151FA4B04B00363BD5 /* Colorize.swift in Sources */,
 				E55E31B81F9E44A8006DD337 /* Seriyal_2.xcdatamodeld in Sources */,
 				E55E31B21F9E44A8006DD337 /* DiscoverController.swift in Sources */,
 				E56D76451F9E472800212318 /* seriesCell.swift in Sources */,
 				E55E31B01F9E44A8006DD337 /* AppDelegate.swift in Sources */,
 				E56D764D1F9E4CFA00212318 /* api.swift in Sources */,
+				E513E6861FA49B630076D59A /* SingleController.swift in Sources */,
 				E56D76481F9E48EF00212318 /* Series.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
