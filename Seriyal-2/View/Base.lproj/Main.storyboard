@@ -82,13 +82,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1200"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rick.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="p9j-6H-RqM">
-                                                <rect key="frame" x="0.0" y="0.0" width="379" height="220"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="379" height="250"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="220" id="w6K-8A-wbI"/>
+                                                    <constraint firstAttribute="height" constant="250" id="w6K-8A-wbI"/>
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R9R-4e-Jtt">
-                                                <rect key="frame" x="15" y="293" width="345" height="50"/>
+                                                <rect key="frame" x="15" y="323" width="345" height="50"/>
                                                 <color key="backgroundColor" red="0.63137254899999995" green="0.1450980392" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="sOj-ck-R5M"/>
@@ -101,43 +101,8 @@
                                                     <action selector="episodeButtonTapped:" destination="3fN-b2-VwH" eventType="touchUpInside" id="TDE-8s-1RU"/>
                                                 </connections>
                                             </button>
-                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayt-6F-LHs">
-                                                <rect key="frame" x="15" y="235" width="345" height="14"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 Seasons" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wvI-bm-2rQ">
-                                                        <rect key="frame" x="0.0" y="0.0" width="70" height="14"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="70" id="h1B-nl-Xdk"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="12"/>
-                                                        <color key="textColor" red="0.12952093908629436" green="0.12952093908629436" blue="0.12952093908629436" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="265 Episodes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r9I-8O-6OU">
-                                                        <rect key="frame" x="70" y="0.0" width="216" height="14"/>
-                                                        <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="12"/>
-                                                        <color key="textColor" red="0.12952093910000001" green="0.12952093910000001" blue="0.12952093910000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rating: 9.6" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PtH-xB-QkT">
-                                                        <rect key="frame" x="286" y="0.0" width="59" height="14"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="59" id="Jjy-lf-asm"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="12"/>
-                                                        <color key="textColor" red="0.12952093910000001" green="0.12952093910000001" blue="0.12952093910000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstItem="wvI-bm-2rQ" firstAttribute="top" secondItem="ayt-6F-LHs" secondAttribute="top" id="ISC-SF-vBR"/>
-                                                    <constraint firstItem="wvI-bm-2rQ" firstAttribute="leading" secondItem="ayt-6F-LHs" secondAttribute="leading" id="LXS-Si-APR"/>
-                                                    <constraint firstItem="r9I-8O-6OU" firstAttribute="leading" secondItem="wvI-bm-2rQ" secondAttribute="trailing" id="WkQ-a5-gsd"/>
-                                                    <constraint firstItem="r9I-8O-6OU" firstAttribute="top" secondItem="ayt-6F-LHs" secondAttribute="top" id="n1x-dj-yx8"/>
-                                                </constraints>
-                                            </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Next Episode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QY9-ig-ejA">
-                                                <rect key="frame" x="150" y="269" width="75" height="14"/>
+                                                <rect key="frame" x="150" y="299" width="75" height="14"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="75" id="KuE-a8-1a1"/>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="QzU-RB-QAE"/>
@@ -158,6 +123,51 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayt-6F-LHs">
+                                                <rect key="frame" x="15" y="265" width="345" height="14"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 Seasons" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wvI-bm-2rQ">
+                                                        <rect key="frame" x="0.0" y="0.0" width="70" height="14"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="70" id="h1B-nl-Xdk"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="12"/>
+                                                        <color key="textColor" red="0.12952093908629436" green="0.12952093908629436" blue="0.12952093908629436" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="265 Episodes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r9I-8O-6OU">
+                                                        <rect key="frame" x="70" y="0.0" width="195" height="14"/>
+                                                        <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="12"/>
+                                                        <color key="textColor" red="0.12952093910000001" green="0.12952093910000001" blue="0.12952093910000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rating: 9.6" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PtH-xB-QkT">
+                                                        <rect key="frame" x="265" y="0.0" width="80" height="14"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="80" id="Jjy-lf-asm"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="12"/>
+                                                        <color key="textColor" red="0.12952093910000001" green="0.12952093910000001" blue="0.12952093910000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="wvI-bm-2rQ" firstAttribute="top" secondItem="ayt-6F-LHs" secondAttribute="top" id="ISC-SF-vBR"/>
+                                                    <constraint firstItem="wvI-bm-2rQ" firstAttribute="leading" secondItem="ayt-6F-LHs" secondAttribute="leading" id="LXS-Si-APR"/>
+                                                    <constraint firstItem="r9I-8O-6OU" firstAttribute="leading" secondItem="wvI-bm-2rQ" secondAttribute="trailing" id="WkQ-a5-gsd"/>
+                                                    <constraint firstItem="r9I-8O-6OU" firstAttribute="top" secondItem="ayt-6F-LHs" secondAttribute="top" id="n1x-dj-yx8"/>
+                                                </constraints>
+                                            </stackView>
+                                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QCD-jT-ydI">
+                                                <rect key="frame" x="0.0" y="197" width="375" height="63"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                                        <color key="value" red="1" green="0.0" blue="0.25425197838429625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="vertical" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -171,14 +181,18 @@
                                             <constraint firstItem="p9j-6H-RqM" firstAttribute="leading" secondItem="KsL-MF-SVi" secondAttribute="leading" id="Nl3-XD-4qJ"/>
                                             <constraint firstAttribute="trailing" secondItem="ayt-6F-LHs" secondAttribute="trailing" constant="15" id="UAm-xY-zNm"/>
                                             <constraint firstAttribute="trailing" secondItem="5cr-eP-lyI" secondAttribute="trailing" constant="15" id="X69-Kb-nJV"/>
+                                            <constraint firstAttribute="trailing" secondItem="QCD-jT-ydI" secondAttribute="trailing" id="XHe-Tn-to8"/>
+                                            <constraint firstItem="QCD-jT-ydI" firstAttribute="top" secondItem="KsL-MF-SVi" secondAttribute="top" constant="197" id="XJi-Hg-n9I"/>
                                             <constraint firstItem="ayt-6F-LHs" firstAttribute="leading" secondItem="KsL-MF-SVi" secondAttribute="leading" constant="15" id="b4V-2R-SkN"/>
                                             <constraint firstItem="ayt-6F-LHs" firstAttribute="top" secondItem="p9j-6H-RqM" secondAttribute="bottom" constant="15" id="bzS-Mh-RUb"/>
                                             <constraint firstItem="FeF-R8-Aw9" firstAttribute="leading" secondItem="KsL-MF-SVi" secondAttribute="leading" constant="15" id="eyB-zl-DYt"/>
                                             <constraint firstItem="p9j-6H-RqM" firstAttribute="top" secondItem="KsL-MF-SVi" secondAttribute="top" id="gWf-s2-hc8"/>
                                             <constraint firstItem="5cr-eP-lyI" firstAttribute="top" secondItem="p9j-6H-RqM" secondAttribute="bottom" constant="10" id="hBF-CM-eo5"/>
+                                            <constraint firstItem="QCD-jT-ydI" firstAttribute="leading" secondItem="KsL-MF-SVi" secondAttribute="leading" id="kwX-ix-HrT"/>
                                             <constraint firstItem="QY9-ig-ejA" firstAttribute="top" secondItem="ayt-6F-LHs" secondAttribute="bottom" constant="20" id="ofG-VI-I45"/>
                                             <constraint firstItem="R9R-4e-Jtt" firstAttribute="top" secondItem="QY9-ig-ejA" secondAttribute="bottom" constant="10" id="rDg-da-7G6"/>
                                             <constraint firstItem="FeF-R8-Aw9" firstAttribute="top" secondItem="R9R-4e-Jtt" secondAttribute="bottom" constant="15" id="u3m-Ou-Cpk"/>
+                                            <constraint firstItem="ayt-6F-LHs" firstAttribute="top" secondItem="QCD-jT-ydI" secondAttribute="bottom" constant="5" id="v26-ev-tDc"/>
                                         </constraints>
                                         <variation key="default">
                                             <mask key="subviews">
@@ -208,6 +222,7 @@
                     </view>
                     <size key="freeformSize" width="375" height="1200"/>
                     <connections>
+                        <outlet property="gradientView" destination="QCD-jT-ydI" id="b0f-7M-kvZ"/>
                         <outlet property="nextEpisodeButton" destination="R9R-4e-Jtt" id="N9e-tU-W39"/>
                         <outlet property="singleShowBackground" destination="KsL-MF-SVi" id="m2I-F4-elo"/>
                         <outlet property="singleShowEpisodes" destination="r9I-8O-6OU" id="IjR-rl-Hqe"/>

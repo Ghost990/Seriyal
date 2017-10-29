@@ -155,6 +155,8 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                 
 
                 for result in seriesJSON["results"].array! {
+                    
+                    
                     let show = Series()
                     show.title = result["name"].stringValue
                     show.id = result["id"].stringValue
@@ -167,7 +169,6 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
 //                    }
 //
                     //show.imageURL = imagesBaseUrl + result["poster_path"].stringValue
-                    print(show.imageURL)
                     
                     self.showIdArray.append(show.id)
                     self.showImagesUrlArray.append(show.imageURL)

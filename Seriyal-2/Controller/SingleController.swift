@@ -28,6 +28,7 @@ class SingleController: UIViewController {
     @IBOutlet weak var singleShowEpisodes: UILabel!
     @IBOutlet weak var singleShowBackground: UIView!
     @IBOutlet weak var singleViewNextEpisodeLabel: UILabel!
+    @IBOutlet weak var gradientView: UIView!
     
     var selectedShowNextEpisodeDate = ""
     var selectedShowTitle = ""
@@ -37,6 +38,11 @@ class SingleController: UIViewController {
     var selectedShowRating = ""
     var selectedShowSeasons = ""
     var selectedShowEpisodes = ""
+    var selectedShowSeasonImageUrl = ""
+    
+    var selectedShowSeasonsArray = [String]()
+    var selectedShowLatestEpisodeUrl = ""
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,10 +50,6 @@ class SingleController: UIViewController {
         getExtraInfo()
         fillWithData()
         colorize()
-        
-        
-        
-        
         
         //self.navigationController?.navigationBar.prefersLargeTitles = false
         
@@ -63,9 +65,10 @@ class SingleController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         
         fillWithData()
-        
+        blurImage()
         calclulateDate()
-        imageWithGradient(img: singleViewImage.image)
+        
+        let lastSeasonNumber = selectedShowSeasonsArray.last
         
     }
 
@@ -76,9 +79,9 @@ class SingleController: UIViewController {
     
     func calclulateDate() {
         
-        let now = DateInRegion()
+        let now = DateInRegion().absoluteDate
         // Parse a string which a custom format
-        let dateUntilShow = try! DateInRegion(string: "\(selectedShowNextEpisodeDate)", format: .custom("yyyy, MM, dd"), fromRegion: Region.Local())
+        let dateUntilShow = try! DateInRegion(string: "\(selectedShowNextEpisodeDate)", format: .custom("yyyy, MM, dd"), fromRegion: Region.Local())?.absoluteDate
         let dateUntilShowLong = try! dateUntilShow?.timeComponentsSinceNow(options: ComponentsFormatterOptions(allowedUnits: [.weekOfMonth,.day], style: .full, zero: .dropAll))
         
         let dateDifferenceUntilShow = (dateUntilShow! - now).in(.day)
@@ -164,8 +167,17 @@ class SingleController: UIViewController {
 
         let api_key = "0b4398f46941f1408547bd8c1f556294"
         let extrasBaseUrl = "https://api.themoviedb.org/3/tv"
+        
+        var latestSeasonNumberArray = [String]()
+        var latestSeasonNumber = latestSeasonNumberArray.last
+        
+        var latestEpisodeNumber = ""
+        
+        let latestEpisodeUrl = "\(extrasBaseUrl)/\(selectedShowId)/season/\(latestSeasonNumber)?api_key=\(api_key)"
+        print(latestEpisodeUrl)
 
         var showExtasUrl = "\(extrasBaseUrl)/\(selectedShowId)?api_key=\(api_key)"
+        
 
         Alamofire.request(showExtasUrl).responseJSON { response in
 
@@ -180,19 +192,53 @@ class SingleController: UIViewController {
                 let runtime = seriesJSON["episode_run_time"].stringValue
                 let title = seriesJSON["name"].stringValue
                 let nextEpisodeDate = seriesJSON["last_air_date"].stringValue
+                let seasonsArray = seriesJSON["seasons"].arrayValue
+                
+                for season in seasonsArray {
+                    let seasonNumber = season["season_number"].stringValue
+                    latestSeasonNumberArray.append(seasonNumber)
+                }
+                
+                //let latestEpisode =
+                
+                print(self.selectedShowId)
                 
                 self.singleShowSeasons.text = "\(seasonNumber) Seasons"
                 self.singleShowEpisodes.text = "\(episodeNumber) Episodes"
                 self.singleShowRuntime.text = "Runtime: \(runtime)"
                 self.selectedShowNextEpisodeDate = nextEpisodeDate
                 
-                
-                
             } else {
                 print("Error \(String(describing: response.result.error))")
             }
 
 
+        }
+        
+        // get episodes
+        
+        Alamofire.request(latestEpisodeUrl).responseJSON { response in
+            
+            if response.result.isSuccess {
+                
+                
+                let seriesJSON : JSON = JSON(response.result.value!)
+                
+                var episodesArray = seriesJSON["episodes"].array
+                
+                for episode in episodesArray! {
+                    let latestEpisode = episode[["name"]].stringValue
+                }
+                
+                //let latestEpisode =
+                
+                print(self.selectedShowId)
+                
+            } else {
+                print("Error \(String(describing: response.result.error))")
+            }
+            
+            
         }
         
     }
@@ -275,47 +321,14 @@ class SingleController: UIViewController {
     
     func blurImage() {
         
-        let bottom = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
-        let top = UIColor(red: 0, green: 0, blue: 0, alpha: 0).cgColor
+        let bgColor = singleShowBackground.backgroundColor!
+        let colorAlpha = UIColor(red: 59.0/255, green: 9.0/255, blue: 68.0/255, alpha: 0.1)
+        gradientView.setGradientBackground(colorOne: bgColor.withAlphaComponent(0.05), colorTwo: bgColor.withAlphaComponent(1.0), colorThree: bgColor.withAlphaComponent(1.0))
         
-        let colors = [top, bottom] as CFArray
         
-        let gradient: CAGradientLayer = CAGradientLayer()
-        gradient.frame = singleViewImage.frame
-        gradient.colors = [colors]
-        gradient.locations = [0.0, 1.0]
-        singleViewImage.layer.insertSublayer(gradient, at: 0)
         
     }
     
-    func imageWithGradient(img:UIImage!) -> UIImage {
-        
-        UIGraphicsBeginImageContext(img.size)
-        let context = UIGraphicsGetCurrentContext()
-        
-        img.draw(at: CGPoint(x: 0, y: 0))
-        
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let locations:[CGFloat] = [0.0, 1.0]
-        
-        let bottom = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
-        let top = UIColor(red: 0, green: 0, blue: 0, alpha: 0).cgColor
-        
-        let colors = [top, bottom] as CFArray
-        
-        let gradient = CGGradient(colorsSpace: colorSpace, colors: colors, locations: locations)
-        
-        let startPoint = CGPoint(x: img.size.width/2, y: 0)
-        let endPoint = CGPoint(x: img.size.width/2, y: img.size.height)
-        
-        context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: UInt32(0)))
-        
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        
-        UIGraphicsEndImageContext()
-        
-        return image!
-    }
     
     /*
     // MARK: - Navigation

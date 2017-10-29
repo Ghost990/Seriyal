@@ -23,6 +23,7 @@ class Series {
     var description: String = ""
     var featuredImageUrl : String = ""
     var genres = [String]()
+    var latestSeasonImageUrl : String = ""
     
     func updateSeries() {
         
