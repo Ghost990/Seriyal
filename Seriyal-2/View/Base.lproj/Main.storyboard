@@ -72,14 +72,14 @@
             <objects>
                 <viewController id="3fN-b2-VwH" customClass="SingleController" customModule="Seriyal_2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="e5m-Zs-n1m">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="1200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Hb-qp-Tgg">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="1200"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KsL-MF-SVi">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1200"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rick.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="p9j-6H-RqM">
                                                 <rect key="frame" x="0.0" y="0.0" width="379" height="220"/>
@@ -97,6 +97,9 @@
                                                 <state key="normal" title="Button">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="episodeButtonTapped:" destination="3fN-b2-VwH" eventType="touchUpInside" id="TDE-8s-1RU"/>
+                                                </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayt-6F-LHs">
                                                 <rect key="frame" x="15" y="235" width="345" height="14"/>
@@ -149,8 +152,8 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FeF-R8-Aw9">
-                                                <rect key="frame" x="15" y="358" width="345" height="20"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FeF-R8-Aw9">
+                                                <rect key="frame" x="15" y="358" width="345" height="194"/>
                                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -203,7 +206,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6DZ-zx-MCm"/>
                     </view>
-                    <size key="freeformSize" width="375" height="800"/>
+                    <size key="freeformSize" width="375" height="1200"/>
                     <connections>
                         <outlet property="nextEpisodeButton" destination="R9R-4e-Jtt" id="N9e-tU-W39"/>
                         <outlet property="singleShowBackground" destination="KsL-MF-SVi" id="m2I-F4-elo"/>

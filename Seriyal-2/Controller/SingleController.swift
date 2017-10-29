@@ -11,6 +11,9 @@ import Alamofire
 import Kingfisher
 import SwiftyJSON
 import UIImageColors
+import SwiftDate
+import EventKit
+import Foundation
 
 class SingleController: UIViewController {
     
@@ -26,6 +29,7 @@ class SingleController: UIViewController {
     @IBOutlet weak var singleShowBackground: UIView!
     @IBOutlet weak var singleViewNextEpisodeLabel: UILabel!
     
+    var selectedShowNextEpisodeDate = ""
     var selectedShowTitle = ""
     var selectedShowDescription = ""
     var selectedShowFeaturedImage = ""
@@ -41,17 +45,27 @@ class SingleController: UIViewController {
         fillWithData()
         colorize()
         
-        singleShowSeasons.text = selectedShowSeasons
-
+        
+        
+        
+        
         //self.navigationController?.navigationBar.prefersLargeTitles = false
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         
-        
         navigationController?.navigationBar.barTintColor = singleShowBackground.backgroundColor
         navigationController?.navigationBar.tintColor = singleShowTitle.textColor
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        fillWithData()
+        
+        calclulateDate()
+        imageWithGradient(img: singleViewImage.image)
         
     }
 
@@ -60,10 +74,31 @@ class SingleController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func calclulateDate() {
+        
+        let now = DateInRegion()
+        // Parse a string which a custom format
+        let dateUntilShow = try! DateInRegion(string: "\(selectedShowNextEpisodeDate)", format: .custom("yyyy, MM, dd"), fromRegion: Region.Local())
+        let dateUntilShowLong = try! dateUntilShow?.timeComponentsSinceNow(options: ComponentsFormatterOptions(allowedUnits: [.weekOfMonth,.day], style: .full, zero: .dropAll))
+        
+        let dateDifferenceUntilShow = (dateUntilShow! - now).in(.day)
+        
+        if dateDifferenceUntilShow! < 0 {
+            nextEpisodeButton.setTitle("Already available", for: .normal)
+        }
+        else if (dateDifferenceUntilShow! > 0) && (dateDifferenceUntilShow! < 7) {
+            nextEpisodeButton.setTitle("in \(dateDifferenceUntilShow!) days", for: .normal)
+        }
+        else {
+            nextEpisodeButton.setTitle("\(dateUntilShowLong!)", for: .normal)
+        }
+    }
+    
     func fillWithData() {
         singleViewDescription.text = selectedShowDescription
         singleShowTitle.text = selectedShowTitle
-        singleShowSeasons.text = selectedShowSeasons
+        //singleShowSeasons.text = selectedShowSeasons
+//        nextEpisodeButton.setTitle(selectedShowNextEpisodeDate, for: .normal)
         
         let singleImageUrl = URL(string: selectedShowFeaturedImage)
         singleViewImage.kf.setImage(with: singleImageUrl)
@@ -143,22 +178,145 @@ class SingleController: UIViewController {
                 let seasonNumber = seriesJSON["number_of_seasons"].stringValue
                 let episodeNumber = seriesJSON["number_of_episodes"].stringValue
                 let runtime = seriesJSON["episode_run_time"].stringValue
-                print(runtime)
+                let title = seriesJSON["name"].stringValue
+                let nextEpisodeDate = seriesJSON["last_air_date"].stringValue
                 
                 self.singleShowSeasons.text = "\(seasonNumber) Seasons"
                 self.singleShowEpisodes.text = "\(episodeNumber) Episodes"
                 self.singleShowRuntime.text = "Runtime: \(runtime)"
-
+                self.selectedShowNextEpisodeDate = nextEpisodeDate
+                
+                
+                
             } else {
                 print("Error \(String(describing: response.result.error))")
             }
 
 
         }
-
+        
     }
     
-
+    func addShowToCalendar() {
+        
+        let eventStore : EKEventStore = EKEventStore()
+        // Access permission
+        eventStore.requestAccess(to: EKEntityType.event) { (granted,error) in
+            
+            if (granted) &&  (error == nil) {
+                print("permission is granted")
+                
+//                let now = DateInRegion()
+//                // Parse a string which a custom format
+//                let showAirDate = try! DateInRegion(string: "\(self.selectedShowNextEpisodeDate)", format: .custom("yyyy, MM, dd"), fromRegion: Region.Local())
+                
+                
+                //let dateDifferenceUntilShow = (dateUntilShow! - now).in(.day)
+                let showAirDate = try! DateInRegion(string: "\(self.selectedShowNextEpisodeDate)", format: .custom("yyyy, MM, dd"), fromRegion: Region.Local())
+                let showAirDateToCalendar = showAirDate?.absoluteDate
+                
+                let showEndDate = showAirDate! + 1.hour
+                let showEndDateToCalendar = showEndDate.absoluteDate
+                
+                let event:EKEvent = EKEvent(eventStore: eventStore)
+                event.title = self.selectedShowTitle
+                event.startDate = showAirDateToCalendar
+                event.endDate = showEndDateToCalendar
+                event.notes = "This note is set up because you wanted to watch the latest \(self.selectedShowTitle) episode."
+                event.calendar = eventStore.defaultCalendarForNewEvents
+                event.addAlarm(EKAlarm.init(relativeOffset: 60.0))
+                
+                print(event.startDate)
+                
+                //                let alarmDate:NSDate = NSDate()
+                //                print("Alarm Date: \(alarmDate)")
+                //                event.addAlarm(EKAlarm.init(absoluteDate: alarmDate))
+                
+                do {
+                    try eventStore.save(event, span: .thisEvent)
+                } catch let specError as NSError {
+                    print("A specific error occurred: \(specError)")
+                } catch {
+                    print("An error occurred")
+                }
+                print("Event saved")
+                
+            } else {
+                print("need permission to create a event")
+            }
+        }
+        
+    }
+    
+    @IBAction func episodeButtonTapped(_ sender: UIButton) {
+        
+        let alertController = UIAlertController(title: selectedShowTitle, message: "What would you like to do?", preferredStyle: .actionSheet)
+        
+        let sendButton = UIAlertAction(title: "Add to calendar", style: .default, handler: { (action) -> Void in
+            print("Ok button tapped")
+            self.addShowToCalendar()
+        })
+        
+        
+        
+        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) -> Void in
+            print("Cancel button tapped")
+        })
+        
+        
+        alertController.addAction(sendButton)
+        
+        alertController.addAction(cancelButton)
+        
+        self.navigationController!.present(alertController, animated: true, completion: nil)
+        
+        
+    }
+    
+    func blurImage() {
+        
+        let bottom = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
+        let top = UIColor(red: 0, green: 0, blue: 0, alpha: 0).cgColor
+        
+        let colors = [top, bottom] as CFArray
+        
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = singleViewImage.frame
+        gradient.colors = [colors]
+        gradient.locations = [0.0, 1.0]
+        singleViewImage.layer.insertSublayer(gradient, at: 0)
+        
+    }
+    
+    func imageWithGradient(img:UIImage!) -> UIImage {
+        
+        UIGraphicsBeginImageContext(img.size)
+        let context = UIGraphicsGetCurrentContext()
+        
+        img.draw(at: CGPoint(x: 0, y: 0))
+        
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let locations:[CGFloat] = [0.0, 1.0]
+        
+        let bottom = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
+        let top = UIColor(red: 0, green: 0, blue: 0, alpha: 0).cgColor
+        
+        let colors = [top, bottom] as CFArray
+        
+        let gradient = CGGradient(colorsSpace: colorSpace, colors: colors, locations: locations)
+        
+        let startPoint = CGPoint(x: img.size.width/2, y: 0)
+        let endPoint = CGPoint(x: img.size.width/2, y: img.size.height)
+        
+        context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: UInt32(0)))
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+        
+        return image!
+    }
+    
     /*
     // MARK: - Navigation
 

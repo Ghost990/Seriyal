@@ -13,6 +13,7 @@ target 'Seriyal-2' do
   pod 'UIImageColors'
   pod "DynamicBlurView"
   pod 'AlamofireObjectMapper', '~> 5.0'
+  pod 'SwiftDate'
   
 
 end
