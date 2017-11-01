@@ -14,6 +14,7 @@ import UIImageColors
 import SwiftDate
 import EventKit
 import Foundation
+import CoreImage
 
 class SingleController: UIViewController {
     
@@ -29,6 +30,9 @@ class SingleController: UIViewController {
     @IBOutlet weak var singleShowBackground: UIView!
     @IBOutlet weak var singleViewNextEpisodeLabel: UILabel!
     @IBOutlet weak var gradientView: UIView!
+    @IBOutlet weak var singleShowOnImage: UIView!
+    @IBOutlet weak var singleShowCover: UIImageView!
+    @IBOutlet weak var blurryView: UIVisualEffectView!
     
     var selectedShowNextEpisodeDate = ""
     var selectedShowTitle = ""
@@ -39,6 +43,7 @@ class SingleController: UIViewController {
     var selectedShowSeasons = ""
     var selectedShowEpisodes = ""
     var selectedShowSeasonImageUrl = ""
+    var selectedShowCoverUrl = ""
     
     var selectedShowSeasonsArray = [String]()
     var selectedShowLatestEpisodeUrl = ""
@@ -55,6 +60,7 @@ class SingleController: UIViewController {
         
         fillWithData()
         colorize()
+        blurEffect()
         
         //self.navigationController?.navigationBar.prefersLargeTitles = false
         
@@ -72,7 +78,7 @@ class SingleController: UIViewController {
         //fillWithData()
         getExtraInfo()
         getLatestEpisodeInfo()
-        blurImage()
+        
         
         guard let nextEpisodeAirDate = try latestAirDates.first else {
             //selectedShowNoNewEpisodes = "Already available"
@@ -134,8 +140,18 @@ class SingleController: UIViewController {
         
         let singleImageUrl = URL(string: selectedShowFeaturedImage)
         singleViewImage.kf.setImage(with: singleImageUrl)
+        singleShowCover.kf.setImage(with: singleImageUrl)
         
         self.navigationItem.title = selectedShowTitle
+        
+    }
+    
+    func blurEffect(){
+        
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurredEffectView = UIVisualEffectView(effect: blurEffect)
+        blurredEffectView.frame = singleViewImage.bounds
+        singleViewImage.addSubview(blurredEffectView)
         
     }
     
@@ -156,9 +172,10 @@ class SingleController: UIViewController {
                 self.singleShowSeasons.textColor = colors.detail
                 self.singleShowRuntime.textColor = colors.detail
                 self.singleViewNextEpisodeLabel.textColor = colors.primary
+                self.singleShowOnImage.backgroundColor = colors.background
                 
                 self.singleShowBackground.backgroundColor = colors.background
-                
+                self.view.backgroundColor = colors.background
                 
                 self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: colors.primary]
                 
@@ -382,15 +399,15 @@ class SingleController: UIViewController {
         
     }
     
-    func blurImage() {
-        
-        let bgColor = singleShowBackground.backgroundColor!
-        let colorAlpha = UIColor(red: 59.0/255, green: 9.0/255, blue: 68.0/255, alpha: 0.1)
-        gradientView.setGradientBackground(colorOne: bgColor.withAlphaComponent(0.05), colorTwo: bgColor.withAlphaComponent(1.0), colorThree: bgColor.withAlphaComponent(1.0))
-        
-        
-        
-    }
+//    func blurImage() {
+//
+//        let bgColor = singleShowBackground.backgroundColor!
+//        let colorAlpha = UIColor(red: 59.0/255, green: 9.0/255, blue: 68.0/255, alpha: 0.1)
+//        gradientView.setGradientBackground(colorOne: bgColor.withAlphaComponent(0.05), colorTwo: bgColor.withAlphaComponent(1.0), colorThree: bgColor.withAlphaComponent(1.0))
+//
+//
+//
+//    }
     
     
     /*
