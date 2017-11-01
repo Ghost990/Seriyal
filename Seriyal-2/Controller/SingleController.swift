@@ -43,11 +43,16 @@ class SingleController: UIViewController {
     var selectedShowSeasonsArray = [String]()
     var selectedShowLatestEpisodeUrl = ""
     
+    var selectedShowNoNewEpisodes = ""
+    
+    var latestAirDates = [String]()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         getExtraInfo()
+        
         fillWithData()
         colorize()
         
@@ -64,13 +69,33 @@ class SingleController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         
-        fillWithData()
+        //fillWithData()
+        getExtraInfo()
+        getLatestEpisodeInfo()
         blurImage()
+        
+        guard let nextEpisodeAirDate = try latestAirDates.first else {
+            //selectedShowNoNewEpisodes = "Already available"
+            nextEpisodeButton.setTitle("Season \(self.selectedShowSeasons) available", for: .normal)
+            nextEpisodeButton.tag = 1
+            return
+        }
+        
+        selectedShowNextEpisodeDate = nextEpisodeAirDate
+        
         calclulateDate()
         
-        let lastSeasonNumber = selectedShowSeasonsArray.last
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//
+//
+//            if self.nextEpisodeButton.titleLabel?.text == "Already available" {
+//                self.nextEpisodeButton.setTitle("Season \(self.selectedShowSeasons) available", for: .normal)
+//            }
+//        }
         
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -79,15 +104,18 @@ class SingleController: UIViewController {
     
     func calclulateDate() {
         
-        let now = DateInRegion().absoluteDate
+        let now = DateInRegion()
         // Parse a string which a custom format
-        let dateUntilShow = try! DateInRegion(string: "\(selectedShowNextEpisodeDate)", format: .custom("yyyy, MM, dd"), fromRegion: Region.Local())?.absoluteDate
+        let dateUntilShow = try! DateInRegion(string: "\(selectedShowNextEpisodeDate)", format: .custom("yyyy, MM, dd"), fromRegion: Region.Local())
         let dateUntilShowLong = try! dateUntilShow?.timeComponentsSinceNow(options: ComponentsFormatterOptions(allowedUnits: [.weekOfMonth,.day], style: .full, zero: .dropAll))
         
-        let dateDifferenceUntilShow = (dateUntilShow! - now).in(.day)
+        var dateDifferenceUntilShow = ((dateUntilShow! + 1.day) - now).in(.day)
         
-        if dateDifferenceUntilShow! < 0 {
-            nextEpisodeButton.setTitle("Already available", for: .normal)
+        if dateDifferenceUntilShow! < 2 {
+            nextEpisodeButton.setTitle("Tomorrow", for: .normal)
+        }
+        else if (dateDifferenceUntilShow! == 0) && (dateDifferenceUntilShow! < 7) {
+            nextEpisodeButton.setTitle("Today", for: .normal)
         }
         else if (dateDifferenceUntilShow! > 0) && (dateDifferenceUntilShow! < 7) {
             nextEpisodeButton.setTitle("in \(dateDifferenceUntilShow!) days", for: .normal)
@@ -95,6 +123,7 @@ class SingleController: UIViewController {
         else {
             nextEpisodeButton.setTitle("\(dateUntilShowLong!)", for: .normal)
         }
+        
     }
     
     func fillWithData() {
@@ -171,10 +200,7 @@ class SingleController: UIViewController {
         var latestSeasonNumberArray = [String]()
         var latestSeasonNumber = latestSeasonNumberArray.last
         
-        var latestEpisodeNumber = ""
         
-        let latestEpisodeUrl = "\(extrasBaseUrl)/\(selectedShowId)/season/\(latestSeasonNumber)?api_key=\(api_key)"
-        print(latestEpisodeUrl)
 
         var showExtasUrl = "\(extrasBaseUrl)/\(selectedShowId)?api_key=\(api_key)"
         
@@ -206,40 +232,69 @@ class SingleController: UIViewController {
                 self.singleShowSeasons.text = "\(seasonNumber) Seasons"
                 self.singleShowEpisodes.text = "\(episodeNumber) Episodes"
                 self.singleShowRuntime.text = "Runtime: \(runtime)"
-                self.selectedShowNextEpisodeDate = nextEpisodeDate
+                self.selectedShowSeasons = seasonNumber
                 
-            } else {
-                print("Error \(String(describing: response.result.error))")
-            }
-
-
-        }
-        
-        // get episodes
-        
-        Alamofire.request(latestEpisodeUrl).responseJSON { response in
-            
-            if response.result.isSuccess {
+                var latestSeason = latestSeasonNumberArray.last
                 
                 
-                let seriesJSON : JSON = JSON(response.result.value!)
+                let latestEpisodeUrl = "\(extrasBaseUrl)/\(self.selectedShowId)/season/\(latestSeason!)?api_key=\(api_key)"
                 
-                var episodesArray = seriesJSON["episodes"].array
+                let now = DateInRegion().absoluteDate
+                // Parse a string which a custom format
                 
-                for episode in episodesArray! {
-                    let latestEpisode = episode[["name"]].stringValue
+                
+                Alamofire.request(latestEpisodeUrl).responseJSON { response in
+                    
+                    if response.result.isSuccess {
+                        
+                        
+                        let episodeJSON : JSON = JSON(response.result.value!)
+                        
+                        let episodesArray = episodeJSON["episodes"].arrayValue
+                        
+                        for episode in episodesArray {
+                            let episodeAirDate = episode["air_date"].stringValue
+                            
+                            let showSingleAirDate = episodeAirDate
+                            self.latestAirDates.append(showSingleAirDate)
+                            
+                            let leave_dates = self.latestAirDates
+                            let today = Date()
+                            let greaterThanToday = leave_dates.filter { (date) -> Bool in
+                                return CustomDateFormatter.campare(date, with: today)
+                            }
+                            self.latestAirDates = greaterThanToday
+                        }
+                        
+                        
+                    } else {
+                        print("Error \(String(describing: response.result.error))")
+                    }
+                    
+                    
                 }
                 
-                //let latestEpisode =
                 
-                print(self.selectedShowId)
                 
             } else {
                 print("Error \(String(describing: response.result.error))")
             }
-            
-            
         }
+        
+        //var latestSeasonNumber = latestSeasonNumberArray.last
+        
+        
+        
+        
+        
+    }
+    
+    func getLatestEpisodeInfo() {
+        
+        let api_key = "0b4398f46941f1408547bd8c1f556294"
+        let extrasBaseUrl = "https://api.themoviedb.org/3/tv"
+        
+        
         
     }
     
@@ -296,25 +351,33 @@ class SingleController: UIViewController {
     
     @IBAction func episodeButtonTapped(_ sender: UIButton) {
         
-        let alertController = UIAlertController(title: selectedShowTitle, message: "What would you like to do?", preferredStyle: .actionSheet)
+        if nextEpisodeButton.tag == 0 {
+            
+            let alertController = UIAlertController(title: selectedShowTitle, message: "What would you like to do?", preferredStyle: .actionSheet)
+            
+            let sendButton = UIAlertAction(title: "Add to calendar", style: .default, handler: { (action) -> Void in
+                print("Ok button tapped")
+                self.addShowToCalendar()
+            })
+            
+            
+            
+            let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) -> Void in
+                print("Cancel button tapped")
+            })
+            
+            
+            alertController.addAction(sendButton)
+            
+            alertController.addAction(cancelButton)
+            
+            self.navigationController!.present(alertController, animated: true, completion: nil)
+            
+        } else {
+            print("tag is 1")
+        }
         
-        let sendButton = UIAlertAction(title: "Add to calendar", style: .default, handler: { (action) -> Void in
-            print("Ok button tapped")
-            self.addShowToCalendar()
-        })
         
-        
-        
-        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) -> Void in
-            print("Cancel button tapped")
-        })
-        
-        
-        alertController.addAction(sendButton)
-        
-        alertController.addAction(cancelButton)
-        
-        self.navigationController!.present(alertController, animated: true, completion: nil)
         
         
     }

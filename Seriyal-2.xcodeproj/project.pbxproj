@@ -22,6 +22,7 @@
 		E56D764B1F9E4A6C00212318 /* rick.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E56D764A1F9E4A6C00212318 /* rick.jpg */; };
 		E56D764D1F9E4CFA00212318 /* api.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D764C1F9E4CFA00212318 /* api.swift */; };
 		E575B4CD1FA63EE800B01D02 /* gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E575B4CC1FA63EE800B01D02 /* gradient.swift */; };
+		E57DD0EC1FA7A82100D1BE27 /* dateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57DD0EB1FA7A82100D1BE27 /* dateFormatter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		E56D764A1F9E4A6C00212318 /* rick.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = rick.jpg; sourceTree = "<group>"; };
 		E56D764C1F9E4CFA00212318 /* api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = api.swift; sourceTree = "<group>"; };
 		E575B4CC1FA63EE800B01D02 /* gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gradient.swift; sourceTree = "<group>"; };
+		E57DD0EB1FA7A82100D1BE27 /* dateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dateFormatter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 		E56D76411F9E459400212318 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E57DD0EA1FA7A80E00D1BE27 /* extend */,
 				E55E31B11F9E44A8006DD337 /* DiscoverController.swift */,
 				E513E6851FA49B630076D59A /* SingleController.swift */,
 			);
@@ -145,6 +148,14 @@
 				E56D764A1F9E4A6C00212318 /* rick.jpg */,
 			);
 			path = images;
+			sourceTree = "<group>";
+		};
+		E57DD0EA1FA7A80E00D1BE27 /* extend */ = {
+			isa = PBXGroup;
+			children = (
+				E57DD0EB1FA7A82100D1BE27 /* dateFormatter.swift */,
+			);
+			path = extend;
 			sourceTree = "<group>";
 		};
 		F60595C01A35073ACE1026F0 /* Frameworks */ = {
@@ -302,6 +313,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E57DD0EC1FA7A82100D1BE27 /* dateFormatter.swift in Sources */,
 				E5374F151FA4B04B00363BD5 /* Colorize.swift in Sources */,
 				E55E31B81F9E44A8006DD337 /* Seriyal_2.xcdatamodeld in Sources */,
 				E55E31B21F9E44A8006DD337 /* DiscoverController.swift in Sources */,
