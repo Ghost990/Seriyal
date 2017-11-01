@@ -165,19 +165,12 @@ class SingleController: UIViewController {
             
             image?.getColors(scaleDownSize: CGSize.init(width: 40, height: 40), completionHandler: { (colors) in
 
-                self.singleShowTitle.textColor = colors.primary
                 self.singleViewDescription.textColor = colors.primary
                 self.nextEpisodeButton.backgroundColor = colors.primary
                 self.singleShowEpisodes.textColor = colors.detail
                 self.singleShowSeasons.textColor = colors.detail
                 self.singleShowRuntime.textColor = colors.detail
                 self.singleViewNextEpisodeLabel.textColor = colors.primary
-                self.singleShowOnImage.backgroundColor = colors.background
-                
-                self.singleShowBackground.backgroundColor = colors.background
-                self.view.backgroundColor = colors.background
-                
-                self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: colors.primary]
                 
                 let attributes = [
                     NSAttributedStringKey.foregroundColor : colors.primary
@@ -185,8 +178,8 @@ class SingleController: UIViewController {
                 
                 self.navigationController?.navigationBar.largeTitleTextAttributes = attributes
                 
-                self.navigationController?.navigationBar.barTintColor = colors.background
-                self.navigationController?.navigationBar.tintColor = colors.primary
+//                self.navigationController?.navigationBar.barTintColor = colors.background
+                //self.navigationController?.navigationBar.tintColor = colors.primary
                 
 //                destinationVC?.singleShowTitle.textColor = colors.primary
 //                destinationVC?.singleViewDescription.textColor = colors.primary
@@ -203,9 +196,33 @@ class SingleController: UIViewController {
                 } else {
                     self.nextEpisodeButton.setTitleColor(UIColor.white, for: .normal)
                 }
+                
+                let bgColor = colors.background
+                let defaultDarkColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 1)
+                
+                if (bgColor?.isLight)! {
+                    self.singleShowBackground.backgroundColor = defaultDarkColor
+                    self.view.backgroundColor = defaultDarkColor
+                    self.navigationController?.navigationBar.barTintColor = defaultDarkColor
+                    self.gradientView.setGradientBackground(colorOne: defaultDarkColor.withAlphaComponent(0.05), colorTwo: defaultDarkColor.withAlphaComponent(1.0), colorThree: defaultDarkColor.withAlphaComponent(1.0))
+                } else {
+                    self.singleShowBackground.backgroundColor = colors.background
+                    self.view.backgroundColor = colors.background
+                    let colorAlpha = UIColor(red: 59.0/255, green: 9.0/255, blue: 68.0/255, alpha: 0.1)
+                    self.gradientView.setGradientBackground(colorOne: (bgColor?.withAlphaComponent(0.05))!, colorTwo: (bgColor?.withAlphaComponent(1.0))!, colorThree: (bgColor?.withAlphaComponent(1.0))!)
+                    self.navigationController?.navigationBar.barTintColor = colors.background
+                }
+                
+                
+                
             })
             
         }
+        
+        singleShowCover.layer.shadowColor = UIColor.black.cgColor
+        singleShowCover.layer.shadowOffset = CGSize(width: 0, height: 2)
+        singleShowCover.layer.shadowOpacity = 0.5
+        singleShowCover.layer.shadowRadius = 6
         
     }
     
@@ -398,16 +415,6 @@ class SingleController: UIViewController {
         
         
     }
-    
-//    func blurImage() {
-//
-//        let bgColor = singleShowBackground.backgroundColor!
-//        let colorAlpha = UIColor(red: 59.0/255, green: 9.0/255, blue: 68.0/255, alpha: 0.1)
-//        gradientView.setGradientBackground(colorOne: bgColor.withAlphaComponent(0.05), colorTwo: bgColor.withAlphaComponent(1.0), colorThree: bgColor.withAlphaComponent(1.0))
-//
-//
-//
-//    }
     
     
     /*

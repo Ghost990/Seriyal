@@ -11,8 +11,6 @@ target 'Seriyal-2' do
   pod 'Kingfisher', '~> 4.0'
   pod 'SwiftyJSON'
   pod 'UIImageColors'
-  pod "DynamicBlurView"
-  pod 'AlamofireObjectMapper', '~> 5.0'
   pod 'SwiftDate'
   
 
