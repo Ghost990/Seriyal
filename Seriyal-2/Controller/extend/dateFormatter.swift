@@ -26,6 +26,6 @@ class CustomDateFormatter {
         guard let newDate = dateFormatter.date(from: string) else {
             return false
         }
-        return newDate > date
+        return newDate >= date
     }
 }

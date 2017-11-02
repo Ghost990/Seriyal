@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ObjectMapper
 
 //var showList : [Series] = [Series]()
 

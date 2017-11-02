@@ -15,8 +15,9 @@ import SwiftDate
 import EventKit
 import Foundation
 import CoreImage
+import UINavigationBar_Transparent
 
-class SingleController: UIViewController {
+class SingleController: UIViewController, UIScrollViewDelegate {
     
     var selectedShowId = ""
     
@@ -30,9 +31,13 @@ class SingleController: UIViewController {
     @IBOutlet weak var singleShowBackground: UIView!
     @IBOutlet weak var singleViewNextEpisodeLabel: UILabel!
     @IBOutlet weak var gradientView: UIView!
-    @IBOutlet weak var singleShowOnImage: UIView!
     @IBOutlet weak var singleShowCover: UIImageView!
-    @IBOutlet weak var blurryView: UIVisualEffectView!
+    @IBOutlet weak var episodesTitleLabel: UILabel!
+    @IBOutlet weak var genresTitleLabel: UILabel!
+    @IBOutlet weak var runtimeTitleLabel: UILabel!
+    @IBOutlet weak var genresInfo: UILabel!
+    @IBOutlet weak var runtimeInfo: UILabel!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     var selectedShowNextEpisodeDate = ""
     var selectedShowTitle = ""
@@ -45,6 +50,7 @@ class SingleController: UIViewController {
     var selectedShowSeasonImageUrl = ""
     var selectedShowCoverUrl = ""
     var selectedShowGenres = [String]()
+    var selectedShowRuntimes = [String]()
     
     var selectedShowSeasonsArray = [String]()
     var selectedShowLatestEpisodeUrl = ""
@@ -60,11 +66,12 @@ class SingleController: UIViewController {
         getExtraInfo()
         
         fillWithData()
-        colorize()
+        
         //blurEffect()
         
+        //self.navigationController?.navigationBar.barTintColor = UIColor.clear
         //self.navigationController?.navigationBar.prefersLargeTitles = false
-        
+        self.scrollView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,6 +80,8 @@ class SingleController: UIViewController {
 //        navigationController?.navigationBar.tintColor = singleShowTitle.textColor
         
         UIApplication.shared.statusBarStyle = .lightContent
+        colorize()
+        self.navigationController?.navigationBar.setBarColor(UIColor.clear)
         
     }
     
@@ -84,8 +93,9 @@ class SingleController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         
         //fillWithData()
-        getExtraInfo()
+        //getExtraInfo()
         getLatestEpisodeInfo()
+        getExtraInfoPrimary()
         
         
         guard let nextEpisodeAirDate = try latestAirDates.first else {
@@ -97,6 +107,8 @@ class SingleController: UIViewController {
         
         selectedShowNextEpisodeDate = nextEpisodeAirDate
         
+        
+        getExtraInfoPrimary()
         calclulateDate()
         
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -106,6 +118,14 @@ class SingleController: UIViewController {
 //                self.nextEpisodeButton.setTitle("Season \(self.selectedShowSeasons) available", for: .normal)
 //            }
 //        }
+        
+    }
+    
+    private func getExtraInfoPrimary() {
+        
+        var genre = self.selectedShowGenres.joined(separator: " | ")
+        genresInfo.text = genre
+        print(self.selectedShowGenres)
         
     }
     
@@ -124,11 +144,12 @@ class SingleController: UIViewController {
         let dateUntilShowLong = try! dateUntilShow?.timeComponentsSinceNow(options: ComponentsFormatterOptions(allowedUnits: [.weekOfMonth,.day], style: .full, zero: .dropAll))
         
         var dateDifferenceUntilShow = ((dateUntilShow! + 1.day) - now).in(.day)
+        print(dateDifferenceUntilShow)
         
-        if dateDifferenceUntilShow! < 2 {
+        if dateDifferenceUntilShow! == 1 {
             nextEpisodeButton.setTitle("Tomorrow", for: .normal)
         }
-        else if (dateDifferenceUntilShow! == 0) && (dateDifferenceUntilShow! < 7) {
+        else if (dateDifferenceUntilShow! == 0) {
             nextEpisodeButton.setTitle("Today", for: .normal)
         }
         else if (dateDifferenceUntilShow! > 0) && (dateDifferenceUntilShow! < 7) {
@@ -137,6 +158,8 @@ class SingleController: UIViewController {
         else {
             nextEpisodeButton.setTitle("\(dateUntilShowLong!)", for: .normal)
         }
+        
+        selectedShowNextEpisodeDate = (dateUntilShow?.string(format: .iso8601Auto))!
         
     }
     
@@ -149,6 +172,8 @@ class SingleController: UIViewController {
         let singleImageUrl = URL(string: selectedShowFeaturedImage)
         singleViewImage.kf.setImage(with: singleImageUrl)
         singleShowCover.kf.setImage(with: singleImageUrl)
+        
+        
         
         self.navigationItem.title = selectedShowTitle
         
@@ -179,10 +204,15 @@ class SingleController: UIViewController {
                 self.singleShowSeasons.textColor = colors.detail
                 self.singleShowRuntime.textColor = colors.detail
                 self.singleViewNextEpisodeLabel.textColor = colors.primary
+                self.episodesTitleLabel.textColor = colors.detail
+                self.genresTitleLabel.textColor = colors.detail
+                self.runtimeTitleLabel.textColor = colors.detail
+                self.genresInfo.textColor = colors.detail
+                self.runtimeInfo.textColor = colors.detail
                 
                 self.singleShowBackground.backgroundColor = colors.background
                 self.view.backgroundColor = colors.background
-                self.navigationController?.navigationBar.barTintColor = colors.background
+                //self.navigationController?.navigationBar.barTintColor = UIColor.clear
                 self.gradientView.setGradientBackground(colorOne: colors.background.withAlphaComponent(0.01), colorTwo: colors.background.withAlphaComponent(0.5), colorThree: colors.background.withAlphaComponent(1.0))
                 let attributes = [
                     NSAttributedStringKey.foregroundColor : colors.primary
@@ -191,7 +221,14 @@ class SingleController: UIViewController {
                 self.navigationController?.navigationBar.tintColor = colors.primary
                 self.singleViewDescription.textColor = colors.primary
                 
-                
+//                self.navigationController?.navigationBar.isTranslucent = true
+//                self.navigationController?.view.backgroundColor = UIColor.clear
+//                self.navigationController?.navigationBar.barTintColor = UIColor.clear
+//                UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+//
+//                // Sets shadow (line below the bar) to a blank image
+//                UINavigationBar.appearance().shadowImage = UIImage()
+//                UINavigationBar.appearance().isTranslucent = true
                 
 //                self.navigationController?.navigationBar.barTintColor = colors.background
                 //self.navigationController?.navigationBar.tintColor = colors.primary
@@ -243,6 +280,7 @@ class SingleController: UIViewController {
         
         var latestSeasonNumberArray = [String]()
         var latestSeasonNumber = latestSeasonNumberArray.last
+        var runTime = [String]()
         
         
 
@@ -259,7 +297,7 @@ class SingleController: UIViewController {
                 
                 let seasonNumber = seriesJSON["number_of_seasons"].stringValue
                 let episodeNumber = seriesJSON["number_of_episodes"].stringValue
-                let runtime = seriesJSON["episode_run_time"].stringValue
+                let runtimeArray = seriesJSON["episode_run_time"].arrayValue
                 let title = seriesJSON["name"].stringValue
                 let nextEpisodeDate = seriesJSON["last_air_date"].stringValue
                 let seasonsArray = seriesJSON["seasons"].arrayValue
@@ -275,13 +313,18 @@ class SingleController: UIViewController {
                     self.selectedShowGenres.append(genreName)
                 }
                 
+                for runtime in runtimeArray {
+                    let episodeRuntime = runtime.stringValue
+                    runTime.append(episodeRuntime)
+                }
+                
                 //let latestEpisode =
                 
-                print(runtime)
+                
                 
                 self.singleShowSeasons.text = "\(seasonNumber) Seasons"
                 self.singleShowEpisodes.text = "\(episodeNumber) Episodes"
-                self.singleShowRuntime.text = "Runtime: \(runtime)"
+                self.runtimeInfo.text = "\(runTime.first!) minutes"
                 self.selectedShowSeasons = seasonNumber
                 
                 var latestSeason = latestSeasonNumberArray.last
@@ -306,15 +349,31 @@ class SingleController: UIViewController {
                             let episodeAirDate = episode["air_date"].stringValue
                             
                             let showSingleAirDate = episodeAirDate
-                            self.latestAirDates.append(showSingleAirDate)
+                            //self.latestAirDates.append(showSingleAirDate)
                             
-                            let leave_dates = self.latestAirDates
                             let today = Date()
-                            let greaterThanToday = leave_dates.filter { (date) -> Bool in
-                                return CustomDateFormatter.campare(date, with: today)
+                            let dateformatter = DateFormatter()
+                            dateformatter.dateFormat = "yyyy-MM-dd"
+                            
+                            let todayDate = dateformatter.string(from: today)
+                            
+                            
+                            let now = try! DateInRegion(string: "\(todayDate)", format: .custom("yyyy-MM-dd"), fromRegion: Region.Local())
+                            let showAiringDate = try! DateInRegion(string: "\(showSingleAirDate)", format: .custom("yyyy-MM-dd"), fromRegion: Region.Local())
+                            
+                            if showAiringDate! >= now! {
+                                self.latestAirDates.append((showAiringDate?.string(custom: "yyyy-MM-dd"))!)
                             }
-                            self.latestAirDates = greaterThanToday
+                            
+//                            let leave_dates = self.latestAirDates
+//                            let today = Date()
+//                            let greaterThanToday = leave_dates.filter { (date) -> Bool in
+//                                return CustomDateFormatter.campare(date, with: today)
+//                            }
+                            //self.latestAirDates = greaterThanToday
                         }
+                        
+                        print(self.latestAirDates)
                         
                         
                     } else {
@@ -427,7 +486,28 @@ class SingleController: UIViewController {
             print("tag is 1")
         }
         
+    }
+    
+    
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
+        //scrollView.contentOffset.y = view.frame.height
+        
+
+        self.navigationController?.navigationBar.setBarColor(singleShowBackground.backgroundColor)
+        let attributes = [
+            NSAttributedStringKey.foregroundColor : nextEpisodeButton.backgroundColor
+        ]
+        self.navigationController?.navigationBar.titleTextAttributes = attributes
+        
+        
+//        if (scrollView.contentOffset.y > 0.2) {
+//
+//        }
+//        else if (scrollView.contentOffset.y < 0.2) {
+//
+//        }
         
         
     }

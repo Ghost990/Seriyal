@@ -12,6 +12,7 @@ target 'Seriyal-2' do
   pod 'SwiftyJSON'
   pod 'UIImageColors'
   pod 'SwiftDate'
+  pod 'UINavigationBar-Transparent'
   
 
 end

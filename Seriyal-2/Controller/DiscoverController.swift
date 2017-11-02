@@ -104,6 +104,10 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        
+    }
+    
 //    func getSelectedShowInfos(showId : String) {
 //
 //        let api_key = "0b4398f46941f1408547bd8c1f556294"
@@ -216,23 +220,8 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
             
             image?.getColors(scaleDownSize: CGSize.init(width: 100, height: 100), completionHandler: { (colors) in
                 
-                UIView.animate(withDuration: 0.6, delay: 0.0, options:[], animations: {
-                    
-                    let destinationVC = SingleController()
-                    destinationVC.singleViewDescription.textColor = colors.primary
-                    
-                    //destinationVC.singleViewDescription.textColor = colors.primary
-                   
-                    
-                }, completion:nil)
                 
-                let color = colors.primary
                 
-//                if (color?.isLight)! {
-//                    destinationVC?.singleShowNextEpisode.setTitleColor(UIColor.black, for: .normal)
-//                } else {
-//                    destinationVC?.singleShowNextEpisode.setTitleColor(UIColor.white, for: .normal)
-//                }
             })
         
         }
