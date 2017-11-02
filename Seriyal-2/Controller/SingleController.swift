@@ -44,6 +44,7 @@ class SingleController: UIViewController {
     var selectedShowEpisodes = ""
     var selectedShowSeasonImageUrl = ""
     var selectedShowCoverUrl = ""
+    var selectedShowGenres = [String]()
     
     var selectedShowSeasonsArray = [String]()
     var selectedShowLatestEpisodeUrl = ""
@@ -60,7 +61,7 @@ class SingleController: UIViewController {
         
         fillWithData()
         colorize()
-        blurEffect()
+        //blurEffect()
         
         //self.navigationController?.navigationBar.prefersLargeTitles = false
         
@@ -68,9 +69,16 @@ class SingleController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         
-        navigationController?.navigationBar.barTintColor = singleShowBackground.backgroundColor
-        navigationController?.navigationBar.tintColor = singleShowTitle.textColor
+//        navigationController?.navigationBar.barTintColor = singleShowBackground.backgroundColor
+//        navigationController?.navigationBar.tintColor = singleShowTitle.textColor
         
+        UIApplication.shared.statusBarStyle = .lightContent
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.statusBarStyle = UIStatusBarStyle.default
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -146,9 +154,9 @@ class SingleController: UIViewController {
         
     }
     
-    func blurEffect(){
+    func blurEffect(style: UIBlurEffect){
         
-        let blurEffect = UIBlurEffect(style: .dark)
+        let blurEffect = style
         let blurredEffectView = UIVisualEffectView(effect: blurEffect)
         blurredEffectView.frame = singleViewImage.bounds
         singleViewImage.addSubview(blurredEffectView)
@@ -165,18 +173,25 @@ class SingleController: UIViewController {
             
             image?.getColors(scaleDownSize: CGSize.init(width: 40, height: 40), completionHandler: { (colors) in
 
-                self.singleViewDescription.textColor = colors.primary
+                
                 self.nextEpisodeButton.backgroundColor = colors.primary
                 self.singleShowEpisodes.textColor = colors.detail
                 self.singleShowSeasons.textColor = colors.detail
                 self.singleShowRuntime.textColor = colors.detail
                 self.singleViewNextEpisodeLabel.textColor = colors.primary
                 
+                self.singleShowBackground.backgroundColor = colors.background
+                self.view.backgroundColor = colors.background
+                self.navigationController?.navigationBar.barTintColor = colors.background
+                self.gradientView.setGradientBackground(colorOne: colors.background.withAlphaComponent(0.01), colorTwo: colors.background.withAlphaComponent(0.5), colorThree: colors.background.withAlphaComponent(1.0))
                 let attributes = [
                     NSAttributedStringKey.foregroundColor : colors.primary
                 ]
-                
                 self.navigationController?.navigationBar.largeTitleTextAttributes = attributes
+                self.navigationController?.navigationBar.tintColor = colors.primary
+                self.singleViewDescription.textColor = colors.primary
+                
+                
                 
 //                self.navigationController?.navigationBar.barTintColor = colors.background
                 //self.navigationController?.navigationBar.tintColor = colors.primary
@@ -201,16 +216,11 @@ class SingleController: UIViewController {
                 let defaultDarkColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 1)
                 
                 if (bgColor?.isLight)! {
-                    self.singleShowBackground.backgroundColor = defaultDarkColor
-                    self.view.backgroundColor = defaultDarkColor
-                    self.navigationController?.navigationBar.barTintColor = defaultDarkColor
-                    self.gradientView.setGradientBackground(colorOne: defaultDarkColor.withAlphaComponent(0.05), colorTwo: defaultDarkColor.withAlphaComponent(1.0), colorThree: defaultDarkColor.withAlphaComponent(1.0))
+                    
+                    self.blurEffect(style: UIBlurEffect(style: .light))
                 } else {
-                    self.singleShowBackground.backgroundColor = colors.background
-                    self.view.backgroundColor = colors.background
-                    let colorAlpha = UIColor(red: 59.0/255, green: 9.0/255, blue: 68.0/255, alpha: 0.1)
-                    self.gradientView.setGradientBackground(colorOne: (bgColor?.withAlphaComponent(0.05))!, colorTwo: (bgColor?.withAlphaComponent(1.0))!, colorThree: (bgColor?.withAlphaComponent(1.0))!)
-                    self.navigationController?.navigationBar.barTintColor = colors.background
+                   
+                    self.blurEffect(style: UIBlurEffect(style: .dark))
                 }
                 
                 
@@ -253,15 +263,21 @@ class SingleController: UIViewController {
                 let title = seriesJSON["name"].stringValue
                 let nextEpisodeDate = seriesJSON["last_air_date"].stringValue
                 let seasonsArray = seriesJSON["seasons"].arrayValue
+                let genresArray = seriesJSON["genres"].arrayValue
                 
                 for season in seasonsArray {
                     let seasonNumber = season["season_number"].stringValue
                     latestSeasonNumberArray.append(seasonNumber)
                 }
                 
+                for genre in genresArray {
+                    let genreName = genre["name"].stringValue
+                    self.selectedShowGenres.append(genreName)
+                }
+                
                 //let latestEpisode =
                 
-                print(self.selectedShowId)
+                print(runtime)
                 
                 self.singleShowSeasons.text = "\(seasonNumber) Seasons"
                 self.singleShowEpisodes.text = "\(episodeNumber) Episodes"
