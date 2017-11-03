@@ -27,6 +27,9 @@
 		E5B1155F1FACBB8E00971218 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1155E1FACBB8E00971218 /* WelcomeController.swift */; };
 		E5B1C08E1FACB44D002682B9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E5B1C08D1FACB44D002682B9 /* GoogleService-Info.plist */; };
 		E5B1C0901FACB531002682B9 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1C08F1FACB531002682B9 /* LoginController.swift */; };
+		E5E7BDD21FACFEB4005AC4AB /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E7BDD11FACFEB3005AC4AB /* SettingsController.swift */; };
+		E5E7BDD41FAD07D4005AC4AB /* FavoritesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E7BDD31FAD07D4005AC4AB /* FavoritesController.swift */; };
+		E5E7BDD61FAD0841005AC4AB /* UpcomingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E7BDD51FAD0841005AC4AB /* UpcomingController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +57,9 @@
 		E5B1155E1FACBB8E00971218 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
 		E5B1C08D1FACB44D002682B9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E5B1C08F1FACB531002682B9 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		E5E7BDD11FACFEB3005AC4AB /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		E5E7BDD31FAD07D4005AC4AB /* FavoritesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesController.swift; sourceTree = "<group>"; };
+		E5E7BDD51FAD0841005AC4AB /* UpcomingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +145,9 @@
 				E5B1C08F1FACB531002682B9 /* LoginController.swift */,
 				E5B1155C1FACBB7E00971218 /* RegisterController.swift */,
 				E5B1155E1FACBB8E00971218 /* WelcomeController.swift */,
+				E5E7BDD11FACFEB3005AC4AB /* SettingsController.swift */,
+				E5E7BDD31FAD07D4005AC4AB /* FavoritesController.swift */,
+				E5E7BDD51FAD0841005AC4AB /* UpcomingController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -334,14 +343,17 @@
 			files = (
 				E5B1C0901FACB531002682B9 /* LoginController.swift in Sources */,
 				E57DD0EC1FA7A82100D1BE27 /* dateFormatter.swift in Sources */,
+				E5E7BDD41FAD07D4005AC4AB /* FavoritesController.swift in Sources */,
 				E5374F151FA4B04B00363BD5 /* Colorize.swift in Sources */,
 				E55E31B81F9E44A8006DD337 /* Seriyal_2.xcdatamodeld in Sources */,
 				E55E31B21F9E44A8006DD337 /* DiscoverController.swift in Sources */,
 				E56D76451F9E472800212318 /* seriesCell.swift in Sources */,
 				E55E31B01F9E44A8006DD337 /* AppDelegate.swift in Sources */,
 				E56D764D1F9E4CFA00212318 /* api.swift in Sources */,
+				E5E7BDD61FAD0841005AC4AB /* UpcomingController.swift in Sources */,
 				E5B1155D1FACBB7E00971218 /* RegisterController.swift in Sources */,
 				E5B1155F1FACBB8E00971218 /* WelcomeController.swift in Sources */,
+				E5E7BDD21FACFEB4005AC4AB /* SettingsController.swift in Sources */,
 				E513E6861FA49B630076D59A /* SingleController.swift in Sources */,
 				E575B4CD1FA63EE800B01D02 /* gradient.swift in Sources */,
 				E56D76481F9E48EF00212318 /* Series.swift in Sources */,
