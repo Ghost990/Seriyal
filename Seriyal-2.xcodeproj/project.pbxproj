@@ -23,6 +23,10 @@
 		E56D764D1F9E4CFA00212318 /* api.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D764C1F9E4CFA00212318 /* api.swift */; };
 		E575B4CD1FA63EE800B01D02 /* gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E575B4CC1FA63EE800B01D02 /* gradient.swift */; };
 		E57DD0EC1FA7A82100D1BE27 /* dateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57DD0EB1FA7A82100D1BE27 /* dateFormatter.swift */; };
+		E5B1155D1FACBB7E00971218 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1155C1FACBB7E00971218 /* RegisterController.swift */; };
+		E5B1155F1FACBB8E00971218 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1155E1FACBB8E00971218 /* WelcomeController.swift */; };
+		E5B1C08E1FACB44D002682B9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E5B1C08D1FACB44D002682B9 /* GoogleService-Info.plist */; };
+		E5B1C0901FACB531002682B9 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1C08F1FACB531002682B9 /* LoginController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +50,10 @@
 		E56D764C1F9E4CFA00212318 /* api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = api.swift; sourceTree = "<group>"; };
 		E575B4CC1FA63EE800B01D02 /* gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gradient.swift; sourceTree = "<group>"; };
 		E57DD0EB1FA7A82100D1BE27 /* dateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dateFormatter.swift; sourceTree = "<group>"; };
+		E5B1155C1FACBB7E00971218 /* RegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
+		E5B1155E1FACBB8E00971218 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
+		E5B1C08D1FACB44D002682B9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E5B1C08F1FACB531002682B9 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +105,7 @@
 				E55E31AF1F9E44A8006DD337 /* AppDelegate.swift */,
 				E55E31B91F9E44A8006DD337 /* Assets.xcassets */,
 				E55E31BE1F9E44A8006DD337 /* Info.plist */,
+				E5B1C08D1FACB44D002682B9 /* GoogleService-Info.plist */,
 				E55E31B61F9E44A8006DD337 /* Seriyal_2.xcdatamodeld */,
 			);
 			path = "Seriyal-2";
@@ -127,6 +136,9 @@
 				E57DD0EA1FA7A80E00D1BE27 /* extend */,
 				E55E31B11F9E44A8006DD337 /* DiscoverController.swift */,
 				E513E6851FA49B630076D59A /* SingleController.swift */,
+				E5B1C08F1FACB531002682B9 /* LoginController.swift */,
+				E5B1155C1FACBB7E00971218 /* RegisterController.swift */,
+				E5B1155E1FACBB8E00971218 /* WelcomeController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -233,6 +245,7 @@
 				E55E31BA1F9E44A8006DD337 /* Assets.xcassets in Resources */,
 				E56D76461F9E472800212318 /* seriesCell.xib in Resources */,
 				E55E31B51F9E44A8006DD337 /* Main.storyboard in Resources */,
+				E5B1C08E1FACB44D002682B9 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,22 +293,32 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Seriyal-2/Pods-Seriyal-2-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireNetworkActivityIndicator/AlamofireNetworkActivityIndicator.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftDate/SwiftDate.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/UIImageColors/UIImageColors.framework",
 				"${BUILT_PRODUCTS_DIR}/UINavigationBar-Transparent/UINavigationBar_Transparent.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireNetworkActivityIndicator.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftDate.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImageColors.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UINavigationBar_Transparent.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -309,6 +332,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5B1C0901FACB531002682B9 /* LoginController.swift in Sources */,
 				E57DD0EC1FA7A82100D1BE27 /* dateFormatter.swift in Sources */,
 				E5374F151FA4B04B00363BD5 /* Colorize.swift in Sources */,
 				E55E31B81F9E44A8006DD337 /* Seriyal_2.xcdatamodeld in Sources */,
@@ -316,6 +340,8 @@
 				E56D76451F9E472800212318 /* seriesCell.swift in Sources */,
 				E55E31B01F9E44A8006DD337 /* AppDelegate.swift in Sources */,
 				E56D764D1F9E4CFA00212318 /* api.swift in Sources */,
+				E5B1155D1FACBB7E00971218 /* RegisterController.swift in Sources */,
+				E5B1155F1FACBB8E00971218 /* WelcomeController.swift in Sources */,
 				E513E6861FA49B630076D59A /* SingleController.swift in Sources */,
 				E575B4CD1FA63EE800B01D02 /* gradient.swift in Sources */,
 				E56D76481F9E48EF00212318 /* Series.swift in Sources */,

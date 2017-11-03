@@ -12,7 +12,7 @@ import Kingfisher
 import SwiftyJSON
 import UIImageColors
 import SwiftDate
-import EventKit
+import EventKit 
 import Foundation
 import CoreImage
 import UINavigationBar_Transparent
@@ -38,6 +38,11 @@ class SingleController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var genresInfo: UILabel!
     @IBOutlet weak var runtimeInfo: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var nextEpisodeOverviewLabel: UILabel!
+    @IBOutlet weak var nextEpisodeOverview: UILabel!
+    @IBOutlet weak var seriesInfoLabel: UILabel!
+    @IBOutlet weak var nextEpisodeTitle: UILabel!
+    @IBOutlet weak var episodeSeparator: UIView!
     
     var selectedShowNextEpisodeDate = ""
     var selectedShowTitle = ""
@@ -51,6 +56,8 @@ class SingleController: UIViewController, UIScrollViewDelegate {
     var selectedShowCoverUrl = ""
     var selectedShowGenres = [String]()
     var selectedShowRuntimes = [String]()
+    var selectedShowNextEpisodeOverview = ""
+    var selectedShowNextEpisodeTitle = ""
     
     var selectedShowSeasonsArray = [String]()
     var selectedShowLatestEpisodeUrl = ""
@@ -63,11 +70,12 @@ class SingleController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getExtraInfo()
+        
         
         fillWithData()
         
         //blurEffect()
+        
         
         //self.navigationController?.navigationBar.barTintColor = UIColor.clear
         //self.navigationController?.navigationBar.prefersLargeTitles = false
@@ -80,14 +88,23 @@ class SingleController: UIViewController, UIScrollViewDelegate {
 //        navigationController?.navigationBar.tintColor = singleShowTitle.textColor
         
         UIApplication.shared.statusBarStyle = .lightContent
+        getExtraInfo()
         colorize()
         self.navigationController?.navigationBar.setBarColor(UIColor.clear)
+        
         
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         UIApplication.shared.statusBarStyle = UIStatusBarStyle.default
+        self.navigationController?.navigationBar.setBarColor(UIColor.white)
+        self.navigationController?.navigationBar.tintColor = UIColor.black
+        let attributes = [
+            NSAttributedStringKey.foregroundColor : UIColor.black
+        ]
+        self.navigationController?.navigationBar.titleTextAttributes = attributes
+        self.navigationController?.navigationBar.largeTitleTextAttributes = attributes
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -106,6 +123,7 @@ class SingleController: UIViewController, UIScrollViewDelegate {
         }
         
         selectedShowNextEpisodeDate = nextEpisodeAirDate
+        print(selectedShowNextEpisodeDate)
         
         
         getExtraInfoPrimary()
@@ -128,6 +146,7 @@ class SingleController: UIViewController, UIScrollViewDelegate {
         print(self.selectedShowGenres)
         
     }
+    
     
     
 
@@ -159,7 +178,7 @@ class SingleController: UIViewController, UIScrollViewDelegate {
             nextEpisodeButton.setTitle("\(dateUntilShowLong!)", for: .normal)
         }
         
-        selectedShowNextEpisodeDate = (dateUntilShow?.string(format: .iso8601Auto))!
+        //selectedShowNextEpisodeDate = (dateUntilShow?.string(format: .iso8601Auto))!
         
     }
     
@@ -172,7 +191,6 @@ class SingleController: UIViewController, UIScrollViewDelegate {
         let singleImageUrl = URL(string: selectedShowFeaturedImage)
         singleViewImage.kf.setImage(with: singleImageUrl)
         singleShowCover.kf.setImage(with: singleImageUrl)
-        
         
         
         self.navigationItem.title = selectedShowTitle
@@ -209,6 +227,11 @@ class SingleController: UIViewController, UIScrollViewDelegate {
                 self.runtimeTitleLabel.textColor = colors.detail
                 self.genresInfo.textColor = colors.detail
                 self.runtimeInfo.textColor = colors.detail
+//                self.nextEpisodeTitle.textColor = colors.primary
+//                self.nextEpisodeOverview.textColor = colors.primary
+//                self.nextEpisodeOverviewLabel.textColor = colors.primary
+                self.seriesInfoLabel.textColor = colors.primary
+//                self.episodeSeparator.backgroundColor = colors.primary
                 
                 self.singleShowBackground.backgroundColor = colors.background
                 self.view.backgroundColor = colors.background
@@ -347,6 +370,17 @@ class SingleController: UIViewController, UIScrollViewDelegate {
                         
                         for episode in episodesArray {
                             let episodeAirDate = episode["air_date"].stringValue
+                            let episodeOverview = episode["overview"].stringValue
+                            let episodeName = episode["name"].stringValue
+                            
+                            print(episodeName)
+                            print(episodeOverview)
+                            
+//                            self.nextEpisodeTitle.text = episodeName
+//                            self.nextEpisodeOverview.text = episodeOverview
+                            
+                            self.selectedShowNextEpisodeTitle = episodeName
+                            self.selectedShowNextEpisodeOverview = episodeOverview
                             
                             let showSingleAirDate = episodeAirDate
                             //self.latestAirDates.append(showSingleAirDate)
@@ -363,6 +397,7 @@ class SingleController: UIViewController, UIScrollViewDelegate {
                             
                             if showAiringDate! >= now! {
                                 self.latestAirDates.append((showAiringDate?.string(custom: "yyyy-MM-dd"))!)
+                                print(episodeName)
                             }
                             
 //                            let leave_dates = self.latestAirDates
@@ -372,6 +407,7 @@ class SingleController: UIViewController, UIScrollViewDelegate {
 //                            }
                             //self.latestAirDates = greaterThanToday
                         }
+                        
                         
                         print(self.latestAirDates)
                         
@@ -425,8 +461,8 @@ class SingleController: UIViewController, UIScrollViewDelegate {
                 let showAirDate = try! DateInRegion(string: "\(self.selectedShowNextEpisodeDate)", format: .custom("yyyy, MM, dd"), fromRegion: Region.Local())
                 let showAirDateToCalendar = showAirDate?.absoluteDate
                 
-                let showEndDate = showAirDate! + 1.hour
-                let showEndDateToCalendar = showEndDate.absoluteDate
+                let showEndDate = showAirDateToCalendar! + 1.hour
+                let showEndDateToCalendar = showEndDate
                 
                 let event:EKEvent = EKEvent(eventStore: eventStore)
                 event.title = self.selectedShowTitle

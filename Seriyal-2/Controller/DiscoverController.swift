@@ -106,6 +106,8 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewWillDisappear(_ animated: Bool) {
         
+        
+        
     }
     
 //    func getSelectedShowInfos(showId : String) {
@@ -210,22 +212,100 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    func colorSetter() {
-        
-        let showFeaturedImageUrl = URL(string: tapShowFeaturedImageUrl)
-        
-        
-        ImageDownloader.default.downloadImage(with: showFeaturedImageUrl!, options: [], progressBlock: nil) {
-            (image, error, url, data) in
-            
-            image?.getColors(scaleDownSize: CGSize.init(width: 100, height: 100), completionHandler: { (colors) in
-                
-                
-                
-            })
-        
-        }
-    }
+//    func colorSetter() {
+//        
+//        
+//            
+//            let showFeaturedImageUrl = URL(string: tapShowFeaturedImageUrl)
+//        
+//            let showVC = SingleController()
+//            
+//            ImageDownloader.default.downloadImage(with: showFeaturedImageUrl!, options: [], progressBlock: nil) {
+//                (image, error, url, data) in
+//                
+//                image?.getColors(scaleDownSize: CGSize.init(width: 40, height: 40), completionHandler: { (colors) in
+//                    
+//                    
+//                    
+//                    showVC.nextEpisodeButton.backgroundColor = colors.primary
+//                    showVC.singleShowEpisodes.textColor = colors.detail
+//                    showVC.singleShowSeasons.textColor = colors.detail
+//                    showVC.singleShowRuntime.textColor = colors.detail
+//                    showVC.singleViewNextEpisodeLabel.textColor = colors.primary
+//                    showVC.episodesTitleLabel.textColor = colors.detail
+//                    showVC.genresTitleLabel.textColor = colors.detail
+//                    showVC.runtimeTitleLabel.textColor = colors.detail
+//                    showVC.genresInfo.textColor = colors.detail
+//                    showVC.runtimeInfo.textColor = colors.detail
+//                    //                self.nextEpisodeTitle.textColor = colors.primary
+//                    //                self.nextEpisodeOverview.textColor = colors.primary
+//                    //                self.nextEpisodeOverviewLabel.textColor = colors.primary
+//                    showVC.seriesInfoLabel.textColor = colors.primary
+//                    //                self.episodeSeparator.backgroundColor = colors.primary
+//                    
+//                    showVC.singleShowBackground.backgroundColor = colors.background
+//                    showVC.view.backgroundColor = colors.background
+//                    //self.navigationController?.navigationBar.barTintColor = UIColor.clear
+//                    showVC.gradientView.setGradientBackground(colorOne: colors.background.withAlphaComponent(0.01), colorTwo: colors.background.withAlphaComponent(0.5), colorThree: colors.background.withAlphaComponent(1.0))
+//                    let attributes = [
+//                        NSAttributedStringKey.foregroundColor : colors.primary
+//                    ]
+//                    showVC.navigationController?.navigationBar.largeTitleTextAttributes = attributes
+//                    showVC.navigationController?.navigationBar.tintColor = colors.primary
+//                    showVC.singleViewDescription.textColor = colors.primary
+//                    
+//                    //                self.navigationController?.navigationBar.isTranslucent = true
+//                    //                self.navigationController?.view.backgroundColor = UIColor.clear
+//                    //                self.navigationController?.navigationBar.barTintColor = UIColor.clear
+//                    //                UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+//                    //
+//                    //                // Sets shadow (line below the bar) to a blank image
+//                    //                UINavigationBar.appearance().shadowImage = UIImage()
+//                    //                UINavigationBar.appearance().isTranslucent = true
+//                    
+//                    //                self.navigationController?.navigationBar.barTintColor = colors.background
+//                    //self.navigationController?.navigationBar.tintColor = colors.primary
+//                    
+//                    //                destinationVC?.singleShowTitle.textColor = colors.primary
+//                    //                destinationVC?.singleViewDescription.textColor = colors.primary
+//                    //                destinationVC?.view.backgroundColor = colors.background
+//                    //                destinationVC?.nextEpisodeButton.backgroundColor = colors.primary
+//                    
+//                    //                destinationVC?.navigationController?.navigationBar.barTintColor = colors.background
+//                    //                destinationVC?.navigationController?.navigationBar.tintColor = colors.primary
+//                    
+//                    let color = colors.primary
+//                    
+//                    if (color?.isLight)! {
+//                        showVC.nextEpisodeButton.setTitleColor(UIColor.black, for: .normal)
+//                    } else {
+//                        showVC.nextEpisodeButton.setTitleColor(UIColor.white, for: .normal)
+//                    }
+//                    
+//                    let bgColor = colors.background
+//                    let defaultDarkColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 1)
+//                    
+//                    if (bgColor?.isLight)! {
+//                        
+//                        showVC.blurEffect(style: UIBlurEffect(style: .light))
+//                    } else {
+//                        
+//                        showVC.blurEffect(style: UIBlurEffect(style: .dark))
+//                    }
+//                    
+//                    
+//                    
+//                })
+//                
+//            }
+//            
+////            showVC.singleShowCover.layer.shadowColor = UIColor.black.cgColor
+////            showVC.singleShowCover.layer.shadowOffset = CGSize(width: 0, height: 2)
+////            showVC.singleShowCover.layer.shadowOpacity = 0.5
+////            showVC.singleShowCover.layer.shadowRadius = 6
+//        
+//        
+//    }
     
     func resetColors() {
         

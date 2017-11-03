@@ -13,6 +13,10 @@ target 'Seriyal-2' do
   pod 'UIImageColors'
   pod 'SwiftDate'
   pod 'UINavigationBar-Transparent'
+  pod 'AlamofireNetworkActivityIndicator'
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Database'
   
 
 end
