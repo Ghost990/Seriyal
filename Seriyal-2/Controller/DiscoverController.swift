@@ -33,9 +33,19 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     var tapShowSeasonsNumber = ""
     var tapShowEpisodesNumber = ""
     
+    let searchController = UISearchController(searchResultsController: nil)
+    var filteredShows = [Series]()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Setup the Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Shows"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
         
         
         resetColors()
@@ -52,14 +62,27 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if isFiltering() {
+            return filteredShows.count
+        }
+        
         return discoverMostPopular.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "seriesCell", for: indexPath) as! seriesCell
+        let show = Series()
+        var singleShow = Series()
         
-        let singleShow = discoverMostPopular[indexPath.row]
+        if isFiltering() {
+            singleShow = filteredShows[indexPath.row]
+        } else {
+            singleShow = discoverMostPopular[indexPath.row]
+        }
+        
+       // let singleShow = discoverMostPopular[indexPath.row]
         let showCoverUrl = URL(string: singleShow.imageURL)
         
         cell.cellTitle.text = singleShow.title
@@ -72,7 +95,15 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let selectedShow = discoverMostPopular[indexPath.row]
+        var selectedShow = Series()
+        if isFiltering() {
+            selectedShow = filteredShows[indexPath.row]
+        } else {
+            selectedShow = discoverMostPopular[indexPath.row]
+        }
+        
+        
+        //let selectedShow = discoverMostPopular[indexPath.row]
         tapShowFeaturedImageUrl = selectedShow.imageURL
         tapShowDescription = selectedShow.description
         tapShowTitle = selectedShow.title
@@ -84,6 +115,7 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         
         let destinationVC = segue.destination as? SingleController
         destinationVC?.selectedShowDescription = tapShowDescription
@@ -315,7 +347,24 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     
+    // MARK: - Private instance methods
     
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        filteredShows = discoverMostPopular.filter({( show : Series) -> Bool in
+            return show.title.lowercased().contains(searchText.lowercased())
+        })
+        
+        discoverTable.reloadData()
+    }
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
     
 
     override func didReceiveMemoryWarning() {
@@ -324,5 +373,12 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
 
+}
+
+extension DiscoverController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
 }
 

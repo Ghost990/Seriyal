@@ -324,7 +324,7 @@
         <scene sceneID="Pyc-Lw-QBP">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JnI-0E-nIp" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Discover" selectedImage="discover" id="moS-Pu-nC7"/>
+                    <tabBarItem key="tabBarItem" title="Discover" image="discover" selectedImage="discover" id="moS-Pu-nC7"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="88h-qO-fSJ">
@@ -350,7 +350,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="AOf-gj-VsT"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Upcoming" selectedImage="upcoming" id="XuF-C1-1PX"/>
+                    <tabBarItem key="tabBarItem" title="Upcoming" image="upcoming" selectedImage="upcoming" id="XuF-C1-1PX"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x9O-LJ-DXa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -366,7 +366,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="bp3-Y2-KxG"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Favorites" selectedImage="favorites" id="JJ8-DJ-Nmu"/>
+                    <tabBarItem key="tabBarItem" title="Favorites" image="favorites" selectedImage="favorites" id="JJ8-DJ-Nmu"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Tg-NT-6ZL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -382,7 +382,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Vpz-wZ-yDK"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Settings" selectedImage="settings" id="O3H-QY-LM6"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="settings" selectedImage="settings" id="O3H-QY-LM6"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ut2-FK-8co" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -553,6 +553,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="Ixl-Hx-Zp8" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="267-9y-wLY">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
@@ -570,10 +571,10 @@
     </scenes>
     <resources>
         <image name="discover" width="25" height="25"/>
-        <image name="favorites" width="25" height="25"/>
+        <image name="favorites" width="30" height="30"/>
         <image name="rick.jpg" width="736" height="951"/>
-        <image name="settings" width="25" height="25"/>
-        <image name="upcoming" width="25" height="25"/>
+        <image name="settings" width="30" height="30"/>
+        <image name="upcoming" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Khc-ev-EFo"/>

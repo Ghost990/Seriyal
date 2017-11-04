@@ -119,6 +119,7 @@ class SingleController: UIViewController, UIScrollViewDelegate {
             //selectedShowNoNewEpisodes = "Already available"
             nextEpisodeButton.setTitle("Season \(self.selectedShowSeasons) available", for: .normal)
             nextEpisodeButton.tag = 1
+            print(latestAirDates)
             return
         }
         
@@ -343,7 +344,7 @@ class SingleController: UIViewController, UIScrollViewDelegate {
                 
                 //let latestEpisode =
                 
-                
+                print(seriesJSON["id"].stringValue)
                 
                 self.singleShowSeasons.text = "\(seasonNumber) Seasons"
                 self.singleShowEpisodes.text = "\(episodeNumber) Episodes"
@@ -373,8 +374,6 @@ class SingleController: UIViewController, UIScrollViewDelegate {
                             let episodeOverview = episode["overview"].stringValue
                             let episodeName = episode["name"].stringValue
                             
-                            print(episodeName)
-                            print(episodeOverview)
                             
 //                            self.nextEpisodeTitle.text = episodeName
 //                            self.nextEpisodeOverview.text = episodeOverview
@@ -397,7 +396,6 @@ class SingleController: UIViewController, UIScrollViewDelegate {
                             
                             if showAiringDate! >= now! {
                                 self.latestAirDates.append((showAiringDate?.string(custom: "yyyy-MM-dd"))!)
-                                print(episodeName)
                             }
                             
 //                            let leave_dates = self.latestAirDates
