@@ -11,7 +11,7 @@ import Foundation
 //var showList : [Series] = [Series]()
 
 
-class Series {
+class Series: HashableClass {
     
     
     var id: String = ""
