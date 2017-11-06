@@ -66,11 +66,12 @@ class SingleController: UIViewController, UIScrollViewDelegate {
     
     var latestAirDates = [String]()
     
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        var favoriteButton = UIBarButtonItem(image: #imageLiteral(resourceName: "favorites_empty"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(favoritesButtonTapped(sender:)))
         
         fillWithData()
         
@@ -80,6 +81,9 @@ class SingleController: UIViewController, UIScrollViewDelegate {
         //self.navigationController?.navigationBar.barTintColor = UIColor.clear
         //self.navigationController?.navigationBar.prefersLargeTitles = false
         self.scrollView.delegate = self
+        navigationItem.rightBarButtonItem = favoriteButton
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -519,6 +523,13 @@ class SingleController: UIViewController, UIScrollViewDelegate {
         } else {
             print("tag is 1")
         }
+        
+    }
+    
+    @objc fileprivate func favoritesButtonTapped(sender: UIBarButtonItem) {
+        
+        print("tapped")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "favorites"), style: UIBarButtonItemStyle.plain, target: Any?.self, action: nil)
         
     }
     

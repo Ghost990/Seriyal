@@ -22,6 +22,8 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var showTitle = ""
     var discoverMostPopular = [Series]()
+    var discoverTopRated = [Series]()
+    var discoverAiringToday = [Series]()
     var testArr = ["one", "two", "three"]
     var showIdArray = [String]()
     var showImagesUrlArray = [String]()
@@ -44,6 +46,8 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.rightBarButtonItem = nil
+        
 //        // Setup the Search Controller
 //        searchController.searchResultsUpdater = self
 //        searchController.obscuresBackgroundDuringPresentation = false
@@ -52,8 +56,26 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
 //        definesPresentationContext = true
         
         if categoryControl.selectedSegmentIndex == 0 {
+            
+            
             getSeries(filterBy: "popular")
+            
         }
+            
+        else if categoryControl.selectedSegmentIndex == 1 {
+            
+            
+            getSeries(filterBy: "top_rated")
+            
+        }
+            
+        else {
+            
+            
+            getSeries(filterBy: "airing_today")
+            
+        }
+        
         resetColors()
         
         
@@ -73,6 +95,31 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
 //            return filteredShows.count
 //        }
         
+        if categoryControl.selectedSegmentIndex == 0 {
+            if discoverMostPopular.count < 10 {
+                return discoverMostPopular.count
+            }
+            else {
+                return 10
+            }
+        }
+        else if categoryControl.selectedSegmentIndex == 1 {
+            if discoverTopRated.count < 10 {
+                return discoverTopRated.count
+            }
+            else {
+                return 10
+            }
+        }
+        else if categoryControl.selectedSegmentIndex == 2 {
+            if discoverAiringToday.count < 10 {
+                return discoverAiringToday.count
+            }
+            else {
+                return 10
+            }
+        }
+        
         return discoverMostPopular.count
     }
     
@@ -88,7 +135,16 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
 //            singleShow = discoverMostPopular[indexPath.row]
 //        }
         
-        singleShow = discoverMostPopular[indexPath.row]
+        
+        if categoryControl.selectedSegmentIndex == 0 {
+            singleShow = discoverMostPopular[indexPath.row]
+        }
+        else if categoryControl.selectedSegmentIndex == 1 {
+            singleShow = discoverTopRated[indexPath.row]
+        }
+        else if categoryControl.selectedSegmentIndex == 2 {
+            singleShow = discoverAiringToday[indexPath.row]
+        }
         
        // let singleShow = discoverMostPopular[indexPath.row]
         let showCoverUrl = URL(string: singleShow.imageURL)
@@ -108,8 +164,18 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
 //            selectedShow = filteredShows[indexPath.row]
 //        }
         
-        selectedShow = discoverMostPopular[indexPath.row]
         //let selectedShow = discoverMostPopular[indexPath.row]
+        
+        if categoryControl.selectedSegmentIndex == 0 {
+            selectedShow = discoverMostPopular[indexPath.row]
+        }
+        else if categoryControl.selectedSegmentIndex == 1 {
+            selectedShow = discoverTopRated[indexPath.row]
+        }
+        else if categoryControl.selectedSegmentIndex == 2 {
+            selectedShow = discoverAiringToday[indexPath.row]
+        }
+        
         tapShowFeaturedImageUrl = selectedShow.imageURL
         tapShowDescription = selectedShow.description
         tapShowTitle = selectedShow.title
@@ -140,6 +206,7 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         
         resetColors()
         navigationItem.title = categoryControl.titleForSegment(at: 0)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -220,8 +287,12 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                     
                     if filterBy == "popular" {
                         self.discoverMostPopular.append(show)
-                    } else if filterBy == "top_rated" {
-                        self.discoverMostPopular.removeAll()
+                    }
+                    else if filterBy == "top_rated" {
+                        self.discoverTopRated.append(show)
+                    }
+                    else if filterBy == "airing_today" {
+                        self.discoverAiringToday.append(show)
                     }
                     
                 }
@@ -240,7 +311,6 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                 
                 //self.showTitle = seriesJSON["results"][0]["name"].stringValue
                 
-                print(self.discoverMostPopular.first?.title)
                 self.discoverTable.reloadData()
                 
                 //self.discoverTopRatedCollection.reloadData()
@@ -382,14 +452,16 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         if categoryControl.selectedSegmentIndex == 0 {
             
             navigationItem.title = categoryControl.titleForSegment(at: 0)
+            navigationItem.prompt = ""
             getSeries(filterBy: "popular")
-            
+            discoverTable.reloadData()
             
         }
         
         else if categoryControl.selectedSegmentIndex == 1 {
             
             navigationItem.title = categoryControl.titleForSegment(at: 1)
+            navigationItem.prompt = ""
             getSeries(filterBy: "top_rated")
             discoverTable.reloadData()
         }
@@ -397,8 +469,9 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         else {
             
             navigationItem.title = categoryControl.titleForSegment(at: 2)
+            navigationItem.prompt = "2017. 11. 06"
             getSeries(filterBy: "airing_today")
-            
+            discoverTable.reloadData()
         }
         
         

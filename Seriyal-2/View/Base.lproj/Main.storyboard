@@ -61,7 +61,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Popular" id="eht-f4-7bh">
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="DZG-ep-kG7">
-                            <rect key="frame" x="45.5" y="7" width="284" height="30"/>
+                            <rect key="frame" x="34" y="7" width="284" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="Most Popular"/>
@@ -72,6 +72,7 @@
                                 <action selector="categoryFilterTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="yfA-Aq-MkQ"/>
                             </connections>
                         </segmentedControl>
+                        <barButtonItem key="rightBarButtonItem" image="favorites" id="r9v-V4-jcR"/>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
