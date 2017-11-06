@@ -17,6 +17,15 @@ class SearchController: UIViewController, UITableViewDataSource, UITableViewDele
     
     @IBOutlet weak var searchResultsTable: UITableView!
     
+    // Show details for moving data
+    var tapShowTitle = ""
+    var tapShowDescription = ""
+    var tapShowId = ""
+    var tapShowFeaturedImageUrl = ""
+    var tapsShowId = ""
+    var tapShowSeasonsNumber = ""
+    var tapShowEpisodesNumber = ""
+    
     let textArray = ["one", "two", "three", "four", "five"]
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -55,11 +64,28 @@ class SearchController: UIViewController, UITableViewDataSource, UITableViewDele
             return cell
             
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        var selectedShow = filteredShows[indexPath.row]
         
+        tapShowFeaturedImageUrl = selectedShow.imageURL
+        tapShowDescription = selectedShow.description
+        tapShowTitle = selectedShow.title
+        tapShowId = selectedShow.id
         
+        performSegue(withIdentifier: "goToSingle", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        
+        let destinationVC = segue.destination as? SingleController
+        destinationVC?.selectedShowDescription = tapShowDescription
+        destinationVC?.selectedShowFeaturedImage = tapShowFeaturedImageUrl
+        destinationVC?.selectedShowTitle = tapShowTitle
+        destinationVC?.selectedShowId = tapShowId
+       
         
     }
     

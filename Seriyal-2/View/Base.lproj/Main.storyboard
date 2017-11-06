@@ -59,9 +59,23 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Popular" id="eht-f4-7bh"/>
+                    <navigationItem key="navigationItem" title="Popular" id="eht-f4-7bh">
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="DZG-ep-kG7">
+                            <rect key="frame" x="45.5" y="7" width="284" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="Most Popular"/>
+                                <segment title="Top Rated"/>
+                                <segment title="Airing Today"/>
+                            </segments>
+                            <connections>
+                                <action selector="categoryFilterTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="yfA-Aq-MkQ"/>
+                            </connections>
+                        </segmentedControl>
+                    </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="categoryControl" destination="DZG-ep-kG7" id="fDv-et-ytM"/>
                         <outlet property="discoverTable" destination="Umd-fV-tVg" id="g85-6T-LOW"/>
                     </connections>
                 </viewController>
@@ -595,6 +609,7 @@
                     <connections>
                         <outlet property="searchDisplayController" destination="pE3-1M-k26" id="o9w-8m-PAt"/>
                         <outlet property="searchResultsTable" destination="e8p-k5-Lpp" id="hca-YD-gOC"/>
+                        <segue destination="3fN-b2-VwH" kind="show" identifier="goToSingle" id="ZeZ-I1-p1l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NvY-gf-dMs" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -659,6 +674,7 @@
         <image name="upcoming" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Khc-ev-EFo"/>
+        <segue reference="zOb-iY-TDC"/>
+        <segue reference="ywA-wL-AB4"/>
     </inferredMetricsTieBreakers>
 </document>

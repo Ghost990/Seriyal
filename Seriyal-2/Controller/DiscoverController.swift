@@ -17,6 +17,9 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     let api_key = "0b4398f46941f1408547bd8c1f556294"
     @IBOutlet weak var discoverTable: UITableView!
     
+    @IBOutlet weak var categoryControl: UISegmentedControl!
+    
+    
     var showTitle = ""
     var discoverMostPopular = [Series]()
     var testArr = ["one", "two", "three"]
@@ -37,19 +40,22 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     var filteredShows = [Series]()
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Setup the Search Controller
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search Shows"
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
+//        // Setup the Search Controller
+//        searchController.searchResultsUpdater = self
+//        searchController.obscuresBackgroundDuringPresentation = false
+//        searchController.searchBar.placeholder = "Search Shows"
+//        navigationItem.searchController = searchController
+//        definesPresentationContext = true
         
-        
+        if categoryControl.selectedSegmentIndex == 0 {
+            getSeries(filterBy: "popular")
+        }
         resetColors()
-        getSeries()
+        
         
         let nib = UINib(nibName: "seriesCell", bundle: nil)
         discoverTable.register(nib, forCellReuseIdentifier: "seriesCell")
@@ -63,9 +69,9 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if isFiltering() {
-            return filteredShows.count
-        }
+//        if isFiltering() {
+//            return filteredShows.count
+//        }
         
         return discoverMostPopular.count
     }
@@ -76,11 +82,13 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         let show = Series()
         var singleShow = Series()
         
-        if isFiltering() {
-            singleShow = filteredShows[indexPath.row]
-        } else {
-            singleShow = discoverMostPopular[indexPath.row]
-        }
+//        if isFiltering() {
+//            singleShow = filteredShows[indexPath.row]
+//        } else {
+//            singleShow = discoverMostPopular[indexPath.row]
+//        }
+        
+        singleShow = discoverMostPopular[indexPath.row]
         
        // let singleShow = discoverMostPopular[indexPath.row]
         let showCoverUrl = URL(string: singleShow.imageURL)
@@ -96,13 +104,11 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         var selectedShow = Series()
-        if isFiltering() {
-            selectedShow = filteredShows[indexPath.row]
-        } else {
-            selectedShow = discoverMostPopular[indexPath.row]
-        }
+//        if isFiltering() {
+//            selectedShow = filteredShows[indexPath.row]
+//        }
         
-        
+        selectedShow = discoverMostPopular[indexPath.row]
         //let selectedShow = discoverMostPopular[indexPath.row]
         tapShowFeaturedImageUrl = selectedShow.imageURL
         tapShowDescription = selectedShow.description
@@ -133,7 +139,7 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewWillAppear(_ animated: Bool) {
         
         resetColors()
-        
+        navigationItem.title = categoryControl.titleForSegment(at: 0)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -173,14 +179,14 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     
     // series data
-    func getSeries() {
+    func getSeries(filterBy: String) {
         
-        let baseUrl = "https://api.themoviedb.org/3/discover/tv?api_key="
+        let baseUrl = "https://api.themoviedb.org/3/tv"
         let imagesUrl = "https://api.themoviedb.org/3/tv/250/images?api_key=\(api_key)&language=en-US"
         let configurationUrl = "https://api.themoviedb.org/3/configuration?api_key=\(api_key)"
         let imagesBaseUrl = "https://image.tmdb.org/t/p/w300"
         
-        let popularSeriesUrl = "\(baseUrl)\(api_key)&language=en-US&sort_by=popularity.desc&page=1&timezone=Europe%2FBudapest&include_null_first_air_dates=false"
+        let popularSeriesUrl = "\(baseUrl)/\(filterBy)?api_key=\(api_key)&language=en-US&page=1"
         
         Alamofire.request(popularSeriesUrl).responseJSON { response in
             
@@ -212,7 +218,11 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                     self.showImagesUrlArray.append(show.imageURL)
                     
                     
-                    self.discoverMostPopular.append(show)
+                    if filterBy == "popular" {
+                        self.discoverMostPopular.append(show)
+                    } else if filterBy == "top_rated" {
+                        self.discoverMostPopular.removeAll()
+                    }
                     
                 }
                 
@@ -230,6 +240,7 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                 
                 //self.showTitle = seriesJSON["results"][0]["name"].stringValue
                 
+                print(self.discoverMostPopular.first?.title)
                 self.discoverTable.reloadData()
                 
                 //self.discoverTopRatedCollection.reloadData()
@@ -349,22 +360,51 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     // MARK: - Private instance methods
     
-    func searchBarIsEmpty() -> Bool {
-        // Returns true if the text is empty or nil
-        return searchController.searchBar.text?.isEmpty ?? true
-    }
+//    func searchBarIsEmpty() -> Bool {
+//        // Returns true if the text is empty or nil
+//        return searchController.searchBar.text?.isEmpty ?? true
+//    }
+//
+//    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+//        filteredShows = discoverMostPopular.filter({( show : Series) -> Bool in
+//            return show.title.lowercased().contains(searchText.lowercased())
+//        })
+//
+//        discoverTable.reloadData()
+//    }
+//
+//    func isFiltering() -> Bool {
+//        return searchController.isActive && !searchBarIsEmpty()
+//    }
     
-    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        filteredShows = discoverMostPopular.filter({( show : Series) -> Bool in
-            return show.title.lowercased().contains(searchText.lowercased())
-        })
+    @IBAction func categoryFilterTapped(_ sender: Any) {
         
-        discoverTable.reloadData()
+        if categoryControl.selectedSegmentIndex == 0 {
+            
+            navigationItem.title = categoryControl.titleForSegment(at: 0)
+            getSeries(filterBy: "popular")
+            
+            
+        }
+        
+        else if categoryControl.selectedSegmentIndex == 1 {
+            
+            navigationItem.title = categoryControl.titleForSegment(at: 1)
+            getSeries(filterBy: "top_rated")
+            discoverTable.reloadData()
+        }
+        
+        else {
+            
+            navigationItem.title = categoryControl.titleForSegment(at: 2)
+            getSeries(filterBy: "airing_today")
+            
+        }
+        
+        
+        
     }
     
-    func isFiltering() -> Bool {
-        return searchController.isActive && !searchBarIsEmpty()
-    }
     
 
     override func didReceiveMemoryWarning() {
@@ -375,10 +415,10 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
 
 }
 
-extension DiscoverController: UISearchResultsUpdating {
-    // MARK: - UISearchResultsUpdating Delegate
-    func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchController.searchBar.text!)
-    }
-}
+//extension DiscoverController: UISearchResultsUpdating {
+//    // MARK: - UISearchResultsUpdating Delegate
+//    func updateSearchResults(for searchController: UISearchController) {
+//        filterContentForSearchText(searchController.searchBar.text!)
+//    }
+//}
 
