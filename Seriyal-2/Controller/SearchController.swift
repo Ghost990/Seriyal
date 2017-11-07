@@ -178,11 +178,11 @@ class SearchController: UIViewController, UITableViewDataSource, UITableViewDele
                         allSearchedShows.append(show)
                     }
                 
-                var uniqueFilteredShows = self.removeDuplicates(array: allSearchedShows)
+                let uniqueFilteredShows = self.removeDuplicates(array: allSearchedShows)
                 self.filteredShows = uniqueFilteredShows
                 
                 break
-            case .failure(let error):
+            case .failure( _):
                 print("Error \(String(describing: response.result.error))")
                 break
             }

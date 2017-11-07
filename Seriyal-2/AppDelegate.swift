@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import AlamofireNetworkActivityIndicator
 import Firebase
+import CoreDataManager
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         NetworkActivityIndicatorManager.shared.isEnabled = true
         FirebaseApp.configure()
+        CoreDataManager.sharedInstance.setupWithModel("Seriyal_2")
         return true
     }
 

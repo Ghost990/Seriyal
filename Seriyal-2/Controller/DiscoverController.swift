@@ -11,8 +11,12 @@ import Alamofire
 import Kingfisher
 import SwiftyJSON
 import UIImageColors
+import AlamofireCoreData
+import CoreData
+import CoreDataManager
 
 class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
     
     let api_key = "0b4398f46941f1408547bd8c1f556294"
     @IBOutlet weak var discoverTable: UITableView!
@@ -202,6 +206,10 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         
         resetColors()
@@ -253,7 +261,11 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         let configurationUrl = "https://api.themoviedb.org/3/configuration?api_key=\(api_key)"
         let imagesBaseUrl = "https://image.tmdb.org/t/p/w300"
         
+        let cdm = CoreDataManager.sharedInstance
+        let mainCtx = cdm.mainContext
+        
         let popularSeriesUrl = "\(baseUrl)/\(filterBy)?api_key=\(api_key)&language=en-US&page=1"
+        
         
         Alamofire.request(popularSeriesUrl).responseJSON { response in
             

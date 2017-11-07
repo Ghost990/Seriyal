@@ -16,6 +16,10 @@ import EventKit
 import Foundation
 import CoreImage
 import UINavigationBar_Transparent
+import CoreDataManager
+import CoreData
+
+let appDelegate = UIApplication.shared.delegate as? AppDelegate
 
 class SingleController: UIViewController, UIScrollViewDelegate {
     
@@ -66,6 +70,7 @@ class SingleController: UIViewController, UIScrollViewDelegate {
     
     var latestAirDates = [String]()
     
+    var savedShow = [SeriesCore]()
     
 
     override func viewDidLoad() {
@@ -74,6 +79,8 @@ class SingleController: UIViewController, UIScrollViewDelegate {
         var favoriteButton = UIBarButtonItem(image: #imageLiteral(resourceName: "favorites_empty"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(favoritesButtonTapped(sender:)))
         
         fillWithData()
+        
+        
         
         //blurEffect()
         
@@ -530,7 +537,63 @@ class SingleController: UIViewController, UIScrollViewDelegate {
         
         print("tapped")
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "favorites"), style: UIBarButtonItemStyle.plain, target: Any?.self, action: nil)
+        //var favoriteButtonDelete = UIBarButtonItem(image: #imageLiteral(resourceName: "favorites_empty"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(favoritesButtonTapped(sender:)))
+        navigationItem.rightBarButtonItem?.tag = 1
         
+        self.save { (complete) in
+            if complete {
+                print("COMPLETE")
+            }
+        }
+
+    }
+    
+    @objc fileprivate func favoritesButtonDeleteTapped(sender: UIBarButtonItem) {
+        
+        print("deletetapped")
+        removeShow()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "favorites_empty"), style: UIBarButtonItemStyle.plain, target: Any?.self, action: nil)
+    }
+    
+    func save(completion: (_ finished: Bool) -> ()) {
+        
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let show = SeriesCore(context: managedContext)
+        let singleShow = Series()
+        
+        show.title = selectedShowTitle
+        show.imageURL = selectedShowFeaturedImage
+        show.summary = selectedShowDescription
+        show.isFavorite = true
+        
+        do {
+            try managedContext.save()
+            print("SAVED DATA")
+            completion(true)
+        } catch {
+            debugPrint("ERROR IN SAVING: \(error.localizedDescription)")
+            completion(false)
+        }
+        
+    }
+    
+    func removeShow() {
+        
+        
+        if navigationItem.rightBarButtonItem?.tag == 1 {
+            guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+            
+            let show = SeriesCore()
+            managedContext.delete(show)
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "favorites_empty"), style: UIBarButtonItemStyle.plain, target: Any?.self, action: nil)
+            
+            do {
+                try managedContext.save()
+                print("SAVED DATA AFTER DELETE")
+            } catch {
+                debugPrint("ERROR IN SAVING: \(error.localizedDescription)")
+            }
+        }
     }
     
     
@@ -568,4 +631,25 @@ class SingleController: UIViewController, UIScrollViewDelegate {
     }
     */
 
+}
+
+extension SingleController {
+    
+    func fetch(completion: (_ complete: Bool) -> ()) {
+        
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
+        
+        do {
+            savedShow = try managedContext.fetch(fetchRequest) as! [SeriesCore]
+            print("FETCHED THE DATA")
+            completion(true)
+        } catch {
+            debugPrint("COULD NOT FETCH")
+            completion(false)
+        }
+        
+    }
+    
 }
