@@ -260,18 +260,77 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         let configurationUrl = "https://api.themoviedb.org/3/configuration?api_key=\(api_key)"
         let imagesBaseUrl = "https://image.tmdb.org/t/p/w300"
         
-        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        
         let popularSeriesUrl = "\(baseUrl)/\(filterBy)?api_key=\(api_key)&language=en-US&page=1"
         
         
-        Alamofire.request(popularSeriesUrl).responseInsert(context: managedContext, type: Many<SeriesCore>.self) { response in
+        Alamofire.request(popularSeriesUrl).responseJSON { response in
             
-            switch response.result {
-            case let .success(user):
-            print("saved it")
-            case .failure:
-                print("error")
+            if response.result.isSuccess {
+                
+                print("Success! Got the data")
+                
+                let seriesJSON : JSON = JSON(response.result.value!)
+                let seriesResult = seriesJSON["results"].arrayValue
+                
+
+                for result in seriesJSON["results"].array! {
+                    
+                    
+                    let show = Series()
+                    show.title = result["name"].stringValue
+                    show.id = result["id"].stringValue
+                    show.imageURL = String(describing: URL(string: imagesBaseUrl + result["poster_path"].stringValue)!)
+                    show.description = result["overview"].stringValue
+                    
+//                    for season in seasonsArray! {
+//                        var seasonCount = season[].count
+//                        self.showSeasonsNumber = seasonCount
+//                    }
+//
+                    //show.imageURL = imagesBaseUrl + result["poster_path"].stringValue
+                    
+                    self.showIdArray.append(show.id)
+                    self.showImagesUrlArray.append(show.imageURL)
+                    
+                    
+                    if filterBy == "popular" {
+                        self.discoverMostPopular.append(show)
+                    }
+                    else if filterBy == "top_rated" {
+                        self.discoverTopRated.append(show)
+                    }
+                    else if filterBy == "airing_today" {
+                        self.discoverAiringToday.append(show)
+                    }
+                    
+                }
+                
+                
+                
+//                for subJson in seriesResult {
+//
+//                    let singleShowTitle = subJson["name"].stringValue
+//                    print(singleShowTitle)
+//                    self.showTitle = singleShowTitle
+//
+//                }
+                
+                
+                
+                //self.showTitle = seriesJSON["results"][0]["name"].stringValue
+                
+                self.discoverTable.reloadData()
+                
+                //self.discoverTopRatedCollection.reloadData()
+                
+                //PersistenceService.saveContext()
+                
+            } else {
+                print("Error \(String(describing: response.result.error))")
             }
+            
+            
         }
     }
     

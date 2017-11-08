@@ -19,7 +19,6 @@ target 'Seriyal-2' do
   pod 'Firebase/Database'
   pod 'Groot'
   pod 'AlamofireCoreData'
-  pod 'Sync'
   
 
 end

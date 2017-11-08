@@ -53,7 +53,6 @@ class FavoritesController: UIViewController, UITableViewDataSource, UITableViewD
         favoritesTable.register(nib, forCellReuseIdentifier: "seriesCell")
         
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        favoritesTable.separatorStyle = .none
     }
 
     override func didReceiveMemoryWarning() {
