@@ -13,7 +13,6 @@ import SwiftyJSON
 import UIImageColors
 import AlamofireCoreData
 import CoreData
-import CoreDataManager
 
 class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -261,8 +260,6 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         let configurationUrl = "https://api.themoviedb.org/3/configuration?api_key=\(api_key)"
         let imagesBaseUrl = "https://image.tmdb.org/t/p/w300"
         
-        let cdm = CoreDataManager.sharedInstance
-        let mainCtx = cdm.mainContext
         
         let popularSeriesUrl = "\(baseUrl)/\(filterBy)?api_key=\(api_key)&language=en-US&page=1"
         

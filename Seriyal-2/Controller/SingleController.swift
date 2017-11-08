@@ -16,7 +16,6 @@ import EventKit
 import Foundation
 import CoreImage
 import UINavigationBar_Transparent
-import CoreDataManager
 import CoreData
 
 let appDelegate = UIApplication.shared.delegate as? AppDelegate
