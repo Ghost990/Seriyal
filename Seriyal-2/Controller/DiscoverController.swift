@@ -48,7 +48,7 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var savedInCoreList = [SeriesCore]()
     
-    
+    var fetcher = Fetcher()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,28 +64,28 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
 //        definesPresentationContext = true
         
         if categoryControl.selectedSegmentIndex == 0 {
-            
-            
-            getSeries(filterBy: "popular")
-            
+            fetcher.apiRequestForList(filterBy: "popular", completion: { (complete) in
+                if complete {
+                    self.discoverTable.reloadData()
+                }
+            })
         }
-            
         else if categoryControl.selectedSegmentIndex == 1 {
-            
-            
-            getSeries(filterBy: "top_rated")
-            
+            fetcher.apiRequestForList(filterBy: "top_rated", completion: { (complete) in
+                if complete {
+                    self.discoverTable.reloadData()
+                }
+            })
         }
-            
         else {
-            
-            
-            getSeries(filterBy: "airing_today")
-            
+            fetcher.apiRequestForList(filterBy: "airing_today", completion: { (complete) in
+                if complete {
+                    self.discoverTable.reloadData()
+                }
+            })
         }
         
         resetColors()
-        print(savedInCoreList)
         
         
         let nib = UINib(nibName: "seriesCell", bundle: nil)
@@ -100,36 +100,37 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-//        if isFiltering() {
-//            return filteredShows.count
-//        }
+        var discoverMostPopularList = fetcher.discoverMostPopular
+        var discoverTopRatedList = fetcher.discoverTopRated
+        var discoverAiringTodayList = fetcher.discoverAiringToday
         
         if categoryControl.selectedSegmentIndex == 0 {
-            if discoverMostPopular.count < 10 {
-                return discoverMostPopular.count
+            if discoverMostPopularList.count < 10 {
+                return discoverMostPopularList.count
             }
             else {
                 return 10
             }
         }
         else if categoryControl.selectedSegmentIndex == 1 {
-            if discoverTopRated.count < 10 {
-                return discoverTopRated.count
+            if discoverTopRatedList.count < 10 {
+                return discoverTopRatedList.count
             }
             else {
                 return 10
             }
         }
         else if categoryControl.selectedSegmentIndex == 2 {
-            if discoverAiringToday.count < 10 {
-                return discoverAiringToday.count
+            if discoverAiringTodayList.count < 10 {
+                return discoverAiringTodayList.count
             }
             else {
                 return 10
             }
         }
         
-        return discoverMostPopular.count
+        
+        return discoverMostPopularList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -137,6 +138,10 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return cell }
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
+        
+        var discoverMostPopularList = fetcher.discoverMostPopular
+        var discoverTopRatedList = fetcher.discoverTopRated
+        var discoverAiringTodayList = fetcher.discoverAiringToday
         
         do{
             let count = try managedContext.count(for: fetchRequest)
@@ -147,13 +152,13 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                 
                 
                 if categoryControl.selectedSegmentIndex == 0 {
-                    singleShow = discoverMostPopular[indexPath.row]
+                    singleShow = discoverMostPopularList[indexPath.row]
                 }
                 else if categoryControl.selectedSegmentIndex == 1 {
-                    singleShow = discoverTopRated[indexPath.row]
+                    singleShow = discoverTopRatedList[indexPath.row]
                 }
                 else if categoryControl.selectedSegmentIndex == 2 {
-                    singleShow = discoverAiringToday[indexPath.row]
+                    singleShow = discoverAiringTodayList[indexPath.row]
                 }
                 
                 // let singleShow = discoverMostPopular[indexPath.row]
@@ -163,9 +168,8 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.cellImage.kf.setImage(with: showCoverUrl)
                 cell.cellSummary.text = singleShow.description
                 
-                return cell
-                
                 print("FROM API")
+                return cell
                 
             }
             else{
@@ -183,9 +187,10 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                 cell.cellImage.kf.setImage(with: showCoverUrl)
                 cell.cellSummary.text = "FROMAPI"
                 
+                print("FROM CORE")
                 return cell
                 
-                print("FROM CORE")
+                
             }
         }
         catch let error as NSError {
@@ -199,35 +204,27 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        
-//        if isFiltering() {
-//            selectedShow = filteredShows[indexPath.row]
-//        }
-        
-        //let selectedShow = discoverMostPopular[indexPath.row]
-        
-        
+        var discoverMostPopularList = fetcher.discoverMostPopular
+        var discoverTopRatedList = fetcher.discoverTopRated
+        var discoverAiringTodayList = fetcher.discoverAiringToday
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
-        
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
         
         do{
             let count = try managedContext.count(for: request)
             if(count == 0){
-                
                 var selectedShow = Series()
                 
                 if categoryControl.selectedSegmentIndex == 0 {
-                    selectedShow = discoverMostPopular[indexPath.row]
+                    selectedShow = discoverMostPopularList[indexPath.row]
                 }
                 else if categoryControl.selectedSegmentIndex == 1 {
-                    selectedShow = discoverTopRated[indexPath.row]
+                    selectedShow = discoverTopRatedList[indexPath.row]
                 }
                 else if categoryControl.selectedSegmentIndex == 2 {
-                    selectedShow = discoverAiringToday[indexPath.row]
+                    selectedShow = discoverAiringTodayList[indexPath.row]
                 }
                 
                 tapShowFeaturedImageUrl = selectedShow.imageURL
@@ -236,7 +233,6 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                 tapShowId = selectedShow.id
                 
                 print("FROM API")
-                
             }
             else{
                 
@@ -588,25 +584,31 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
             
             navigationItem.title = categoryControl.titleForSegment(at: 0)
             navigationItem.prompt = ""
-            getSeries(filterBy: "popular")
-            discoverTable.reloadData()
-            
+            fetcher.apiRequestForList(filterBy: "popular", completion: { (complete) in
+                self.discoverTable.reloadData()
+            })
         }
         
         else if categoryControl.selectedSegmentIndex == 1 {
             
             navigationItem.title = categoryControl.titleForSegment(at: 1)
             navigationItem.prompt = ""
-            getSeries(filterBy: "top_rated")
-            discoverTable.reloadData()
+            fetcher.apiRequestForList(filterBy: "top_rated", completion: { (complete) in
+                if complete {
+                    self.discoverTable.reloadData()
+                }
+            })
         }
         
         else {
             
             navigationItem.title = categoryControl.titleForSegment(at: 2)
             navigationItem.prompt = "2017. 11. 06"
-            getSeries(filterBy: "airing_today")
-            discoverTable.reloadData()
+            fetcher.apiRequestForList(filterBy: "airing_today", completion: { (complete) in
+                if complete {
+                    self.discoverTable.reloadData()
+                }
+            })  
         }
         
         
@@ -628,8 +630,6 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
             show.summary = coreShow.description
             
         }
-        
-        
         do {
             try managedContext.save()
             print("SAVED DATA")
