@@ -13,6 +13,7 @@ import SwiftyJSON
 import UIImageColors
 import AlamofireCoreData
 import CoreData
+import Sync
 
 class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -40,9 +41,12 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     var tapsShowId = ""
     var tapShowSeasonsNumber = ""
     var tapShowEpisodesNumber = ""
+    var allShowsId = ""
     
     let searchController = UISearchController(searchResultsController: nil)
     var filteredShows = [Series]()
+    
+    var savedInCoreList = [SeriesCore]()
     
     
     
@@ -50,6 +54,7 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = nil
+        
         
 //        // Setup the Search Controller
 //        searchController.searchResultsUpdater = self
@@ -80,6 +85,7 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         
         resetColors()
+        print(savedInCoreList)
         
         
         let nib = UINib(nibName: "seriesCell", bundle: nil)
@@ -127,63 +133,127 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "seriesCell", for: indexPath) as! seriesCell
-        let show = Series()
-        var singleShow = Series()
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return cell }
         
-//        if isFiltering() {
-//            singleShow = filteredShows[indexPath.row]
-//        } else {
-//            singleShow = discoverMostPopular[indexPath.row]
-//        }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
         
-        
-        if categoryControl.selectedSegmentIndex == 0 {
-            singleShow = discoverMostPopular[indexPath.row]
+        do{
+            let count = try managedContext.count(for: fetchRequest)
+            if(count == 0){
+                
+                let show = Series()
+                var singleShow = Series()
+                
+                
+                if categoryControl.selectedSegmentIndex == 0 {
+                    singleShow = discoverMostPopular[indexPath.row]
+                }
+                else if categoryControl.selectedSegmentIndex == 1 {
+                    singleShow = discoverTopRated[indexPath.row]
+                }
+                else if categoryControl.selectedSegmentIndex == 2 {
+                    singleShow = discoverAiringToday[indexPath.row]
+                }
+                
+                // let singleShow = discoverMostPopular[indexPath.row]
+                let showCoverUrl = URL(string: singleShow.imageURL)
+                
+                cell.cellTitle.text = singleShow.title
+                cell.cellImage.kf.setImage(with: showCoverUrl)
+                cell.cellSummary.text = singleShow.description
+                
+                return cell
+                
+                print("FROM API")
+                
+            }
+            else{
+                
+                savedInCoreList = try managedContext.fetch(fetchRequest) as! [SeriesCore]
+                let show = SeriesCore()
+                var singleShow = SeriesCore()
+                
+                singleShow = savedInCoreList[indexPath.row]
+                
+                // let singleShow = discoverMostPopular[indexPath.row]
+                let showCoverUrl = URL(string: singleShow.imageURL!)
+                
+                cell.cellTitle.text = singleShow.title
+                cell.cellImage.kf.setImage(with: showCoverUrl)
+                cell.cellSummary.text = "FROMAPI"
+                
+                return cell
+                
+                print("FROM CORE")
+            }
         }
-        else if categoryControl.selectedSegmentIndex == 1 {
-            singleShow = discoverTopRated[indexPath.row]
+        catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
         }
-        else if categoryControl.selectedSegmentIndex == 2 {
-            singleShow = discoverAiringToday[indexPath.row]
-        }
-        
-       // let singleShow = discoverMostPopular[indexPath.row]
-        let showCoverUrl = URL(string: singleShow.imageURL)
-        
-        cell.cellTitle.text = singleShow.title
-        cell.cellImage.kf.setImage(with: showCoverUrl)
-        cell.cellSummary.text = singleShow.description
         
         return cell
+        
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        var selectedShow = Series()
+        
 //        if isFiltering() {
 //            selectedShow = filteredShows[indexPath.row]
 //        }
         
         //let selectedShow = discoverMostPopular[indexPath.row]
         
-        if categoryControl.selectedSegmentIndex == 0 {
-            selectedShow = discoverMostPopular[indexPath.row]
-        }
-        else if categoryControl.selectedSegmentIndex == 1 {
-            selectedShow = discoverTopRated[indexPath.row]
-        }
-        else if categoryControl.selectedSegmentIndex == 2 {
-            selectedShow = discoverAiringToday[indexPath.row]
-        }
         
-        tapShowFeaturedImageUrl = selectedShow.imageURL
-        tapShowDescription = selectedShow.description
-        tapShowTitle = selectedShow.title
-        tapShowId = selectedShow.id
         
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
+        
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
+        
+        do{
+            let count = try managedContext.count(for: request)
+            if(count == 0){
+                
+                var selectedShow = Series()
+                
+                if categoryControl.selectedSegmentIndex == 0 {
+                    selectedShow = discoverMostPopular[indexPath.row]
+                }
+                else if categoryControl.selectedSegmentIndex == 1 {
+                    selectedShow = discoverTopRated[indexPath.row]
+                }
+                else if categoryControl.selectedSegmentIndex == 2 {
+                    selectedShow = discoverAiringToday[indexPath.row]
+                }
+                
+                tapShowFeaturedImageUrl = selectedShow.imageURL
+                tapShowDescription = selectedShow.description
+                tapShowTitle = selectedShow.title
+                tapShowId = selectedShow.id
+                
+                print("FROM API")
+                
+            }
+            else{
+                
+                var selectedShow = SeriesCore()
+                savedInCoreList = try managedContext.fetch(fetchRequest) as! [SeriesCore]
+                selectedShow = savedInCoreList[indexPath.row]
+                
+                tapShowFeaturedImageUrl = selectedShow.imageURL!
+                tapShowDescription = selectedShow.description
+                tapShowTitle = "FROM API"
+                
+                print("FROM CORE")
+            }
+        }
+        catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
         
         
         performSegue(withIdentifier: "fromShowToSingle", sender: self)
@@ -219,6 +289,32 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewWillDisappear(_ animated: Bool) {
         
         
+        
+    }
+    
+    func checkCoreData() {
+        let show = Series()
+        let showId = show.id
+        let title = show.title
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
+    //        let predicate = NSPredicate(format: "title == %@", title)
+    //        request.predicate = predicate
+    //        request.fetchLimit = 1
+        let managedContext = appDelegate?.persistentContainer.viewContext
+        
+        do{
+            let count = try managedContext?.count(for: request)
+            if(count == 0){
+                print("no object")
+            }
+            else{
+                try print("found obejct: \(managedContext?.count(for: request))")
+            }
+        }
+        catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
         
     }
     
@@ -271,8 +367,12 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                 print("Success! Got the data")
                 
                 let seriesJSON : JSON = JSON(response.result.value!)
-                let seriesResult = seriesJSON["results"].arrayValue
+                let seriesResult = seriesJSON["results"].dictionaryObject
                 
+                let stackResult = JSON(response.result.value!).dictionaryObject
+                let dataStack = DataStack(modelName: "Seriyal_2")
+                
+                //let seriesCore = seriesResult as! [String: Any]
 
                 for result in seriesJSON["results"].array! {
                     
@@ -304,8 +404,34 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                         self.discoverAiringToday.append(show)
                     }
                     
+//                    self.save { (complete) in
+//                        if complete {
+//                            print("COMPLETE")
+//                        }
+//                    }
+                    
+//                    dataStack.sync([seriesCore], inEntityNamed: "SeriesCore") { error in
+//                        // New objects have been inserted
+//                        // Existing objects have been updated
+//                        // And not found objects have been deleted
+//                    }
+                    
+//                    var singleShow = SeriesCore()
+//                    var singleShowId = singleShow.id
+//                    
+//                    if show.id != singleShowId {
+//                        self.save { (complete) in
+//                            if complete {
+//                                print("COMPLETE")
+//                            }
+//                        }
+//                    } else {
+//                        print("already on the list")
+//                        return
+//                    }
+                    
+                    
                 }
-                
                 
                 
 //                for subJson in seriesResult {
@@ -487,6 +613,34 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         
     }
     
+    func save(completion: (_ finished: Bool) -> ()) {
+        
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let show = SeriesCore(context: managedContext)
+        let singleShow = Series()
+        
+        var coreList = (discoverMostPopular + discoverTopRated + discoverAiringToday)
+        
+        for coreShow in coreList {
+            
+            show.title = coreShow.title
+            show.imageURL = coreShow.imageURL
+            show.summary = coreShow.description
+            
+        }
+        
+        
+        do {
+            try managedContext.save()
+            print("SAVED DATA")
+            completion(true)
+        } catch {
+            debugPrint("ERROR IN SAVING: \(error.localizedDescription)")
+            completion(false)
+        }
+        
+    }
+    
     
 
     override func didReceiveMemoryWarning() {
@@ -495,6 +649,27 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
 
+}
+
+extension DiscoverController {
+    
+    func fetch(completion: (_ complete: Bool) -> ()) {
+        
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
+        
+        do {
+            savedInCoreList = try managedContext.fetch(fetchRequest) as! [SeriesCore]
+            print("FETCHED THE DATA")
+            completion(true)
+        } catch {
+            debugPrint("COULD NOT FETCH")
+            completion(false)
+        }
+        
+    }
+    
 }
 
 //extension DiscoverController: UISearchResultsUpdating {

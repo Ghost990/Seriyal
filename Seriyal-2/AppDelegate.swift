@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         NetworkActivityIndicatorManager.shared.isEnabled = true
         FirebaseApp.configure()
+        let path = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)
+        print("\(path)")
         return true
     }
 

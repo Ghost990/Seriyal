@@ -39,7 +39,7 @@ class FavoritesController: UIViewController, UITableViewDataSource, UITableViewD
         
         self.fetch { (complete) in
             if complete {
-                print("Complete the fetch, has data")
+                print("Complete the fetch, has data. Found \(favoriteShows.count) entry.")
             }
         }
     }
@@ -53,7 +53,32 @@ class FavoritesController: UIViewController, UITableViewDataSource, UITableViewD
         favoritesTable.register(nib, forCellReuseIdentifier: "seriesCell")
         
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        
     }
+    
+//    func fetchLocalUsers() -> [SeriesCore] {
+//        let request: NSFetchRequest<SeriesCore> = SeriesCore.fetchRequest()
+//
+//        return (try! appDelegate?.persistentContainer.viewContext.fetch(request))!
+//    }
+    
+    func removeDuplicates(array: [SeriesCore]) -> [SeriesCore] {
+        var encountered = Set<SeriesCore>()
+        var result: [SeriesCore] = []
+        for value in array {
+            if encountered.contains(value) {
+                // Do not add a duplicate element.
+            }
+            else {
+                // Add value to the set.
+                encountered.insert(value)
+                // ... Append the value.
+                result.append(value)
+            }
+        }
+        return result
+    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -82,7 +107,9 @@ extension FavoritesController {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
         
         do {
-            favoriteShows = try managedContext.fetch(fetchRequest) as! [SeriesCore]
+            let allFavoriteShows = try managedContext.fetch(fetchRequest) as! [SeriesCore]
+            let uniqueFilteredShows = self.removeDuplicates(array: allFavoriteShows)
+            favoriteShows = uniqueFilteredShows
             print("FETCHED THE DATA")
             completion(true)
         } catch {
