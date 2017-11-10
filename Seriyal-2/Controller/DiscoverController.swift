@@ -50,6 +50,8 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var fetcher = Fetcher()
     
+    var filterList = "popular"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -134,70 +136,133 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "seriesCell", for: indexPath) as! seriesCell
-        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return cell }
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
+                let cell = tableView.dequeueReusableCell(withIdentifier: "seriesCell", for: indexPath) as! seriesCell
+                guard let managedContext = appDelegate?.persistentContainer.viewContext else { return cell }
+                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
         
-        var discoverMostPopularList = fetcher.discoverMostPopular
-        var discoverTopRatedList = fetcher.discoverTopRated
-        var discoverAiringTodayList = fetcher.discoverAiringToday
         
-        do{
-            let count = try managedContext.count(for: fetchRequest)
-            if(count == 0){
-                
-                let show = Series()
-                var singleShow = Series()
-                
-                
-                if categoryControl.selectedSegmentIndex == 0 {
-                    singleShow = discoverMostPopularList[indexPath.row]
+                do {
+        
+                    let count = try managedContext.count(for: fetchRequest)
+                    
+                    if(count == 0){
+        
+                        let show = Series()
+                        var singleShow = Series()
+        
+        
+                        if categoryControl.selectedSegmentIndex == 0 {
+                            singleShow = discoverMostPopular[indexPath.row]
+                        }
+                        else if categoryControl.selectedSegmentIndex == 1 {
+                            singleShow = discoverTopRated[indexPath.row]
+                        }
+                        else if categoryControl.selectedSegmentIndex == 2 {
+                            singleShow = discoverAiringToday[indexPath.row]
+                        }
+        
+                        // let singleShow = discoverMostPopular[indexPath.row]
+                        let showCoverUrl = URL(string: singleShow.imageURL)
+        
+                        cell.cellTitle.text = singleShow.title
+                        cell.cellImage.kf.setImage(with: showCoverUrl)
+                        cell.cellSummary.text = singleShow.description
+        
+                        print("FROM API")
+                        return cell
+        
+                    }
+                    else{
+                        
+                        fetcher.fetchFromCore(filter: filterList)
+                        var savedInCoreList = fetcher.savedInCoreList
+                        var singleShow = savedInCoreList[indexPath.row]
+                        
+                        if categoryControl.selectedSegmentIndex == 0 {
+                            filterList = "popular"
+                        }
+                        else if categoryControl.selectedSegmentIndex == 1 {
+                            filterList = "topRated"
+                        }
+                        else if categoryControl.selectedSegmentIndex == 2 {
+                            filterList = "airingToday"
+                        }
+                        
+                        cell.cellTitle.text = singleShow.title
+                        return cell
+                    }
                 }
-                else if categoryControl.selectedSegmentIndex == 1 {
-                    singleShow = discoverTopRatedList[indexPath.row]
+                catch let error as NSError {
+                    print("Could not fetch \(error), \(error.userInfo)")
                 }
-                else if categoryControl.selectedSegmentIndex == 2 {
-                    singleShow = discoverAiringTodayList[indexPath.row]
-                }
-                
-                // let singleShow = discoverMostPopular[indexPath.row]
-                let showCoverUrl = URL(string: singleShow.imageURL)
-                
-                cell.cellTitle.text = singleShow.title
-                cell.cellImage.kf.setImage(with: showCoverUrl)
-                cell.cellSummary.text = singleShow.description
-                
-                print("FROM API")
                 return cell
-                
-            }
-            else{
-                
-                savedInCoreList = try managedContext.fetch(fetchRequest) as! [SeriesCore]
-                let show = SeriesCore()
-                var singleShow = SeriesCore()
-                
-                singleShow = savedInCoreList[indexPath.row]
-                
-                // let singleShow = discoverMostPopular[indexPath.row]
-                let showCoverUrl = URL(string: singleShow.imageURL!)
-                
-                cell.cellTitle.text = singleShow.title
-                cell.cellImage.kf.setImage(with: showCoverUrl)
-                cell.cellSummary.text = "FROMAPI"
-                
-                print("FROM CORE")
-                return cell
-                
-                
-            }
-        }
-        catch let error as NSError {
-            print("Could not fetch \(error), \(error.userInfo)")
-        }
         
-        return cell
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "seriesCell", for: indexPath) as! seriesCell
+//        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return cell }
+//
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
+//
+//
+//        do {
+//            var discoverMostPopularList = fetcher.discoverCoreMostPopular
+//            var discoverTopRatedList = fetcher.discoverCoreTopRated
+//            var discoverAiringTodayList = fetcher.discoverCoreAiringToday
+//
+//            let count = try managedContext.count(for: fetchRequest)
+//            if(count == 0){
+//
+//                let show = Series()
+//                var singleShow = Series()
+//
+//
+//                if categoryControl.selectedSegmentIndex == 0 {
+//                    singleShow = discoverMostPopular[indexPath.row]
+//                }
+//                else if categoryControl.selectedSegmentIndex == 1 {
+//                    singleShow = discoverTopRated[indexPath.row]
+//                }
+//                else if categoryControl.selectedSegmentIndex == 2 {
+//                    singleShow = discoverAiringToday[indexPath.row]
+//                }
+//
+//                // let singleShow = discoverMostPopular[indexPath.row]
+//                let showCoverUrl = URL(string: singleShow.imageURL)
+//
+//                cell.cellTitle.text = singleShow.title
+//                cell.cellImage.kf.setImage(with: showCoverUrl)
+//                cell.cellSummary.text = singleShow.description
+//
+//                print("FROM API")
+//                return cell
+//
+//            }
+//            else{
+//
+//                savedInCoreList = try managedContext.fetch(fetchRequest) as! [SeriesCore]
+//                let show = SeriesCore()
+//                var singleShow = SeriesCore()
+//
+//                singleShow = savedInCoreList[indexPath.row]
+//
+//                // let singleShow = discoverMostPopular[indexPath.row]
+//                let showCoverUrl = URL(string: singleShow.imageURL!)
+//
+//                cell.cellTitle.text = singleShow.title
+//                cell.cellImage.kf.setImage(with: showCoverUrl)
+//                cell.cellSummary.text = "FROMAPI"
+//
+//                print("FROM CORE")
+//                return cell
+//
+//
+//            }
+//        }
+//        catch let error as NSError {
+//            print("Could not fetch \(error), \(error.userInfo)")
+//        }
+//
+//        return cell
         
         
     }
@@ -245,7 +310,9 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                 tapShowTitle = "FROM API"
                 
                 print("FROM CORE")
+                
             }
+            
         }
         catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
@@ -587,8 +654,10 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
             fetcher.apiRequestForList(filterBy: "popular", completion: { (complete) in
                 self.discoverTable.reloadData()
             })
+            filterList = "popular"
+            self.discoverTable.reloadData()
         }
-        
+            
         else if categoryControl.selectedSegmentIndex == 1 {
             
             navigationItem.title = categoryControl.titleForSegment(at: 1)
@@ -598,8 +667,10 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                     self.discoverTable.reloadData()
                 }
             })
+            filterList = "topRated"
+            self.discoverTable.reloadData()
         }
-        
+            
         else {
             
             navigationItem.title = categoryControl.titleForSegment(at: 2)
@@ -608,10 +679,10 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                 if complete {
                     self.discoverTable.reloadData()
                 }
-            })  
+            })
+            filterList = "airingToday"
+            self.discoverTable.reloadData()
         }
-        
-        
         
     }
     

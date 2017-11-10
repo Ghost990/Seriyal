@@ -11,19 +11,30 @@ import CoreData
 import Alamofire
 import SwiftyJSON
 
+let appDelegate = UIApplication.shared.delegate as? AppDelegate
+
 class Fetcher {
     
     private let persistenctContainer: NSPersistentContainer
     private let api_key = "0b4398f46941f1408547bd8c1f556294"
     
-    var discoverMostPopular : [Series] = [Series]()
-    var discoverTopRated : [Series] = [Series]()
-    var discoverAiringToday : [Series] = [Series]()
+    var discoverMostPopular = [Series]()
+    var discoverTopRated = [Series]()
+    var discoverAiringToday = [Series]()
+    
+    var discoverCoreMostPopular = [SeriesCore]()
+    var discoverCoreTopRated = [SeriesCore]()
+    var discoverCoreAiringToday = [SeriesCore]()
+    
+    var savedInCoreList = [SeriesCore]()
     
     var showTitle = ""
     var showDescription = ""
     var showImageUrl = ""
     var showId = ""
+    
+    let managedContext = appDelegate?.persistentContainer.viewContext
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
     
     init() {
         let modelName = "Seriyal_2"
@@ -31,7 +42,6 @@ class Fetcher {
     }
     
     func apiRequestForList(filterBy: String, completion: @escaping (_ complete: Bool) -> ()) {
-        
         
         let baseUrl = "https://api.themoviedb.org/3/tv"
         _ = "https://api.themoviedb.org/3/tv/250/images?api_key=\(api_key)&language=en-US"
@@ -59,7 +69,19 @@ class Fetcher {
                         self.showDescription = result["overview"].stringValue
                         
                         self.fillListWithApi(filterBy: filterBy)
+                        
+                        if filterBy == "popular" {
+                            self.saveToList(showCategory: "popular")
+                        }
+                        else if filterBy == "top_rated" {
+                            self.saveToList(showCategory: "topRated")
+                        }
+                        else if filterBy == "airing_today" {
+                            self.saveToList(showCategory: "airingToday")
+                        }
+                        
                         completion(true)
+                        
                     }
                 } catch {
                     debugPrint("COULD NOT load")
@@ -73,7 +95,7 @@ class Fetcher {
         
     }
     
-    func fillListWithApi(filterBy: String) {
+    private func fillListWithApi(filterBy: String) {
         let show = Series()
         show.title = showTitle
         show.id = showId
@@ -89,6 +111,48 @@ class Fetcher {
         else if filterBy == "airing_today" {
             self.discoverAiringToday.append(show)
         }
+    }
+    
+    func fetchFromCore(filter: String) {
+        
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
+        
+        let filter = filter
+        let predicate = NSPredicate(format: "onList = %@", filter)
+        fetchRequest.predicate = predicate
+        
+        do {
+            savedInCoreList = try managedContext.fetch(fetchRequest) as! [SeriesCore]
+            print("FETCHED THE DATA")
+        } catch {
+            debugPrint("COULD NOT FETCH")
+        }
+    }
+    
+    func saveToList(showCategory: String) {
+        
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let show = SeriesCore(context: managedContext)
+        let singleShow = Series()
+        
+        var coreList = (discoverMostPopular + discoverTopRated + discoverAiringToday)
+        
+        for coreShow in coreList {
+            show.title = coreShow.title
+            show.imageURL = coreShow.imageURL
+            show.summary = coreShow.description
+            show.onList = showCategory
+        }
+        
+        
+        do {
+            try managedContext.save()
+            print("SAVED DATA")
+        } catch {
+            debugPrint("ERROR IN SAVING: \(error.localizedDescription)")
+        }
+        
     }
     
 }

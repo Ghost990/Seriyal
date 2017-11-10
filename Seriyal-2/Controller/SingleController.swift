@@ -18,7 +18,6 @@ import CoreImage
 import UINavigationBar_Transparent
 import CoreData
 
-let appDelegate = UIApplication.shared.delegate as? AppDelegate
 
 class SingleController: UIViewController, UIScrollViewDelegate {
     
