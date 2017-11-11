@@ -52,12 +52,51 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var filterList = "popular"
     
+    var shows : [SeriesCore] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = nil
         
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
         
+        let predicate = NSPredicate(format: "onList = %@", "popular")
+        fetchRequest.predicate = predicate
+        do {
+            let count = try managedContext.count(for: fetchRequest)
+            if(count == 0){
+                fetcher.apiRequestForList(filterBy: "popular", completion: { (complete) in
+                    if complete {
+                        print("got from onload api")
+                    }
+                })
+            } else {
+                getData(filter: "popular")
+            }
+        } catch {
+            debugPrint("COULD NOT FETCH")
+        }
+        
+        
+        if categoryControl.selectedSegmentIndex == 0 {
+            
+            getData(filter: "popular")
+            self.discoverTable.reloadData()
+        }
+            
+        else if categoryControl.selectedSegmentIndex == 1 {
+            
+            getData(filter: "topRated")
+            self.discoverTable.reloadData()
+        }
+            
+        else {
+            
+            getData(filter: "airingToday")
+            self.discoverTable.reloadData()
+        }
 //        // Setup the Search Controller
 //        searchController.searchResultsUpdater = self
 //        searchController.obscuresBackgroundDuringPresentation = false
@@ -65,27 +104,27 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
 //        navigationItem.searchController = searchController
 //        definesPresentationContext = true
         
-        if categoryControl.selectedSegmentIndex == 0 {
-            fetcher.apiRequestForList(filterBy: "popular", completion: { (complete) in
-                if complete {
-                    self.discoverTable.reloadData()
-                }
-            })
-        }
-        else if categoryControl.selectedSegmentIndex == 1 {
-            fetcher.apiRequestForList(filterBy: "top_rated", completion: { (complete) in
-                if complete {
-                    self.discoverTable.reloadData()
-                }
-            })
-        }
-        else {
-            fetcher.apiRequestForList(filterBy: "airing_today", completion: { (complete) in
-                if complete {
-                    self.discoverTable.reloadData()
-                }
-            })
-        }
+//        if categoryControl.selectedSegmentIndex == 0 {
+//            fetcher.apiRequestForList(filterBy: "popular", completion: { (complete) in
+//                if complete {
+//                    self.discoverTable.reloadData()
+//                }
+//            })
+//        }
+//        else if categoryControl.selectedSegmentIndex == 1 {
+//            fetcher.apiRequestForList(filterBy: "top_rated", completion: { (complete) in
+//                if complete {
+//                    self.discoverTable.reloadData()
+//                }
+//            })
+//        }
+//        else {
+//            fetcher.apiRequestForList(filterBy: "airing_today", completion: { (complete) in
+//                if complete {
+//                    self.discoverTable.reloadData()
+//                }
+//            })
+//        }
         
         resetColors()
         
@@ -102,101 +141,97 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        var discoverMostPopularList = fetcher.discoverMostPopular
-        var discoverTopRatedList = fetcher.discoverTopRated
-        var discoverAiringTodayList = fetcher.discoverAiringToday
+        return 10
         
-        if categoryControl.selectedSegmentIndex == 0 {
-            if discoverMostPopularList.count < 10 {
-                return discoverMostPopularList.count
-            }
-            else {
-                return 10
-            }
-        }
-        else if categoryControl.selectedSegmentIndex == 1 {
-            if discoverTopRatedList.count < 10 {
-                return discoverTopRatedList.count
-            }
-            else {
-                return 10
-            }
-        }
-        else if categoryControl.selectedSegmentIndex == 2 {
-            if discoverAiringTodayList.count < 10 {
-                return discoverAiringTodayList.count
-            }
-            else {
-                return 10
-            }
-        }
-        
-        
-        return discoverMostPopularList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-                let cell = tableView.dequeueReusableCell(withIdentifier: "seriesCell", for: indexPath) as! seriesCell
-                guard let managedContext = appDelegate?.persistentContainer.viewContext else { return cell }
-                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
+            let cell = tableView.dequeueReusableCell(withIdentifier: "seriesCell", for: indexPath) as! seriesCell
         
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return cell }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
         
-                do {
+        var apiShow = Series()
         
-                    let count = try managedContext.count(for: fetchRequest)
-                    
-                    if(count == 0){
-        
-                        let show = Series()
-                        var singleShow = Series()
-        
-        
-                        if categoryControl.selectedSegmentIndex == 0 {
-                            singleShow = discoverMostPopular[indexPath.row]
+        let selectedIndex = self.categoryControl.selectedSegmentIndex
+        switch selectedIndex
+        {
+        case 0:
+            let predicate = NSPredicate(format: "onList = %@", "popular")
+            fetchRequest.predicate = predicate
+            do {
+                let count = try managedContext.count(for: fetchRequest)
+                if(count == 0){
+                    fetcher.apiRequestForList(filterBy: "popular", completion: { (complete) in
+                        if complete {
+                            var discoverMostPopularList = self.fetcher.discoverMostPopular
+                            apiShow = discoverMostPopularList[indexPath.row]
+                            cell.cellTitle.text = "fromapi \(apiShow.title)"
                         }
-                        else if categoryControl.selectedSegmentIndex == 1 {
-                            singleShow = discoverTopRated[indexPath.row]
-                        }
-                        else if categoryControl.selectedSegmentIndex == 2 {
-                            singleShow = discoverAiringToday[indexPath.row]
-                        }
-        
-                        // let singleShow = discoverMostPopular[indexPath.row]
-                        let showCoverUrl = URL(string: singleShow.imageURL)
-        
-                        cell.cellTitle.text = singleShow.title
-                        cell.cellImage.kf.setImage(with: showCoverUrl)
-                        cell.cellSummary.text = singleShow.description
-        
-                        print("FROM API")
-                        return cell
-        
-                    }
-                    else{
-                        
-                        fetcher.fetchFromCore(filter: filterList)
-                        var savedInCoreList = fetcher.savedInCoreList
-                        var singleShow = savedInCoreList[indexPath.row]
-                        
-                        if categoryControl.selectedSegmentIndex == 0 {
-                            filterList = "popular"
-                        }
-                        else if categoryControl.selectedSegmentIndex == 1 {
-                            filterList = "topRated"
-                        }
-                        else if categoryControl.selectedSegmentIndex == 2 {
-                            filterList = "airingToday"
-                        }
-                        
-                        cell.cellTitle.text = singleShow.title
-                        return cell
-                    }
+                    })
+                } else {
+                    shows = try managedContext.fetch(fetchRequest) as! [SeriesCore]
+                    let show = shows[indexPath.row]
+                    cell.cellTitle.text = show.title
+                    print("FETCHED THE DATA")
                 }
-                catch let error as NSError {
-                    print("Could not fetch \(error), \(error.userInfo)")
+            } catch {
+                debugPrint("COULD NOT FETCH")
+            }
+            return cell
+        case 1:
+            let predicate = NSPredicate(format: "onList = %@", "topRated")
+            fetchRequest.predicate = predicate
+            do {
+                let count = try managedContext.count(for: fetchRequest)
+                if(count == 0){
+                    fetcher.apiRequestForList(filterBy: "top_rated", completion: { (complete) in
+                        if complete {
+                            var discoverTopRatedList = self.fetcher.discoverTopRated
+                            apiShow = discoverTopRatedList[indexPath.row]
+                            cell.cellTitle.text = "fromapi \(apiShow.title)"
+                        }
+                    })
+                } else {
+                    shows = try managedContext.fetch(fetchRequest) as! [SeriesCore]
+                    let show = shows[indexPath.row]
+                    cell.cellTitle.text = show.title
+                    print("FETCHED THE DATA")
                 }
-                return cell
+            } catch {
+                debugPrint("COULD NOT FETCH")
+            }
+            return cell
+        case 2:
+            let predicate = NSPredicate(format: "onList = %@", "airingToday")
+            fetchRequest.predicate = predicate
+            do {
+                let count = try managedContext.count(for: fetchRequest)
+                if(count == 0){
+                    fetcher.apiRequestForList(filterBy: "airing_today", completion: { (complete) in
+                        if complete {
+                            var discoverAiringTodayList = self.fetcher.discoverAiringToday
+                            apiShow = discoverAiringTodayList[indexPath.row]
+                            cell.cellTitle.text = "fromapi \(apiShow.title)"
+                        }
+                    })
+                } else {
+                    shows = try managedContext.fetch(fetchRequest) as! [SeriesCore]
+                    let show = shows[indexPath.row]
+                    cell.cellTitle.text = show.title
+                    print("FETCHED THE DATA")
+                }
+            } catch {
+                debugPrint("COULD NOT FETCH")
+            }
+            return cell
+        default:
+            return cell
+        }
+        
+    
+        
         
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "seriesCell", for: indexPath) as! seriesCell
 //        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return cell }
@@ -273,50 +308,7 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         var discoverTopRatedList = fetcher.discoverTopRated
         var discoverAiringTodayList = fetcher.discoverAiringToday
         
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
-        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
         
-        do{
-            let count = try managedContext.count(for: request)
-            if(count == 0){
-                var selectedShow = Series()
-                
-                if categoryControl.selectedSegmentIndex == 0 {
-                    selectedShow = discoverMostPopularList[indexPath.row]
-                }
-                else if categoryControl.selectedSegmentIndex == 1 {
-                    selectedShow = discoverTopRatedList[indexPath.row]
-                }
-                else if categoryControl.selectedSegmentIndex == 2 {
-                    selectedShow = discoverAiringTodayList[indexPath.row]
-                }
-                
-                tapShowFeaturedImageUrl = selectedShow.imageURL
-                tapShowDescription = selectedShow.description
-                tapShowTitle = selectedShow.title
-                tapShowId = selectedShow.id
-                
-                print("FROM API")
-            }
-            else{
-                
-                var selectedShow = SeriesCore()
-                savedInCoreList = try managedContext.fetch(fetchRequest) as! [SeriesCore]
-                selectedShow = savedInCoreList[indexPath.row]
-                
-                tapShowFeaturedImageUrl = selectedShow.imageURL!
-                tapShowDescription = selectedShow.description
-                tapShowTitle = "FROM API"
-                
-                print("FROM CORE")
-                
-            }
-            
-        }
-        catch let error as NSError {
-            print("Could not fetch \(error), \(error.userInfo)")
-        }
         
         
         performSegue(withIdentifier: "fromShowToSingle", sender: self)
@@ -344,9 +336,12 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewWillAppear(_ animated: Bool) {
         
+        getData(filter: "airingToday")
+        
         resetColors()
         navigationItem.title = categoryControl.titleForSegment(at: 0)
         
+        self.discoverTable.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -355,60 +350,22 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         
     }
     
-    func checkCoreData() {
-        let show = Series()
-        let showId = show.id
-        let title = show.title
+    func getData(filter: String) {
         
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
-    //        let predicate = NSPredicate(format: "title == %@", title)
-    //        request.predicate = predicate
-    //        request.fetchLimit = 1
-        let managedContext = appDelegate?.persistentContainer.viewContext
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
         
-        do{
-            let count = try managedContext?.count(for: request)
-            if(count == 0){
-                print("no object")
-            }
-            else{
-                try print("found obejct: \(managedContext?.count(for: request))")
-            }
+        let filter = filter
+        let predicate = NSPredicate(format: "onList = %@", filter)
+        fetchRequest.predicate = predicate
+        
+        do {
+            shows = (try managedContext.fetch(SeriesCore.fetchRequest()))
+            self.discoverTable.reloadData()
+        } catch {
+            print("was error in fetching")
         }
-        catch let error as NSError {
-            print("Could not fetch \(error), \(error.userInfo)")
-        }
-        
     }
-    
-//    func getSelectedShowInfos(showId : String) {
-//
-//        let api_key = "0b4398f46941f1408547bd8c1f556294"
-//        let extrasBaseUrl = "https://api.themoviedb.org/3/tv"
-//
-//        var showExtasUrl = "\(extrasBaseUrl)/\(showId)?api_key=\(api_key)"
-//
-//        Alamofire.request(showExtasUrl).responseJSON { response in
-//
-//            if response.result.isSuccess {
-//
-//                print("Success! Got the data")
-//
-//                let seriesJSON : JSON = JSON(response.result.value!)
-//
-//                let show = Series()
-//                show.seasonsNumber = seriesJSON["number_of_seasons"].stringValue
-////                self.tapShowSeasonsNumber = seriesJSON["number_of_seasons"].stringValue
-//                self.tapShowSeasonsNumber = show.seasonsNumber
-//
-//            } else {
-//                print("Error \(String(describing: response.result.error))")
-//            }
-//
-//
-//        }
-//
-//    }
     
     
     // series data
@@ -645,44 +602,9 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
 //        return searchController.isActive && !searchBarIsEmpty()
 //    }
     
-    @IBAction func categoryFilterTapped(_ sender: Any) {
+    @IBAction func categoryFilterTapped(_ sender: UISegmentedControl) {
         
-        if categoryControl.selectedSegmentIndex == 0 {
-            
-            navigationItem.title = categoryControl.titleForSegment(at: 0)
-            navigationItem.prompt = ""
-            fetcher.apiRequestForList(filterBy: "popular", completion: { (complete) in
-                self.discoverTable.reloadData()
-            })
-            filterList = "popular"
-            self.discoverTable.reloadData()
-        }
-            
-        else if categoryControl.selectedSegmentIndex == 1 {
-            
-            navigationItem.title = categoryControl.titleForSegment(at: 1)
-            navigationItem.prompt = ""
-            fetcher.apiRequestForList(filterBy: "top_rated", completion: { (complete) in
-                if complete {
-                    self.discoverTable.reloadData()
-                }
-            })
-            filterList = "topRated"
-            self.discoverTable.reloadData()
-        }
-            
-        else {
-            
-            navigationItem.title = categoryControl.titleForSegment(at: 2)
-            navigationItem.prompt = "2017. 11. 06"
-            fetcher.apiRequestForList(filterBy: "airing_today", completion: { (complete) in
-                if complete {
-                    self.discoverTable.reloadData()
-                }
-            })
-            filterList = "airingToday"
-            self.discoverTable.reloadData()
-        }
+        self.discoverTable.reloadData()
         
     }
     

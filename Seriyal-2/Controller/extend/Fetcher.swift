@@ -130,6 +130,25 @@ class Fetcher {
         }
     }
     
+    func fetchFromCoreToList(filter: String, completion: (_ complete: Bool) -> ()) {
+        
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
+        
+        let filter = filter
+        let predicate = NSPredicate(format: "onList = %@", filter)
+        fetchRequest.predicate = predicate
+        
+        do {
+            savedInCoreList = try managedContext.fetch(fetchRequest) as! [SeriesCore]
+            print("FETCHED THE DATA")
+            completion(true)
+        } catch {
+            debugPrint("COULD NOT FETCH")
+            completion(false)
+        }
+    }
+    
     func saveToList(showCategory: String) {
         
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
