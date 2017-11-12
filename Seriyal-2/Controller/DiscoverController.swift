@@ -11,9 +11,7 @@ import Alamofire
 import Kingfisher
 import SwiftyJSON
 import UIImageColors
-import AlamofireCoreData
 import CoreData
-import Sync
 
 class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -79,55 +77,7 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
             debugPrint("COULD NOT FETCH")
         }
         
-        
-        if categoryControl.selectedSegmentIndex == 0 {
-            
-            getData(filter: "popular")
-            self.discoverTable.reloadData()
-        }
-            
-        else if categoryControl.selectedSegmentIndex == 1 {
-            
-            getData(filter: "topRated")
-            self.discoverTable.reloadData()
-        }
-            
-        else {
-            
-            getData(filter: "airingToday")
-            self.discoverTable.reloadData()
-        }
-//        // Setup the Search Controller
-//        searchController.searchResultsUpdater = self
-//        searchController.obscuresBackgroundDuringPresentation = false
-//        searchController.searchBar.placeholder = "Search Shows"
-//        navigationItem.searchController = searchController
-//        definesPresentationContext = true
-        
-//        if categoryControl.selectedSegmentIndex == 0 {
-//            fetcher.apiRequestForList(filterBy: "popular", completion: { (complete) in
-//                if complete {
-//                    self.discoverTable.reloadData()
-//                }
-//            })
-//        }
-//        else if categoryControl.selectedSegmentIndex == 1 {
-//            fetcher.apiRequestForList(filterBy: "top_rated", completion: { (complete) in
-//                if complete {
-//                    self.discoverTable.reloadData()
-//                }
-//            })
-//        }
-//        else {
-//            fetcher.apiRequestForList(filterBy: "airing_today", completion: { (complete) in
-//                if complete {
-//                    self.discoverTable.reloadData()
-//                }
-//            })
-//        }
-        
         resetColors()
-        
         
         let nib = UINib(nibName: "seriesCell", bundle: nil)
         discoverTable.register(nib, forCellReuseIdentifier: "seriesCell")
@@ -230,76 +180,6 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
             return cell
         }
         
-    
-        
-        
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "seriesCell", for: indexPath) as! seriesCell
-//        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return cell }
-//
-//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
-//
-//
-//        do {
-//            var discoverMostPopularList = fetcher.discoverCoreMostPopular
-//            var discoverTopRatedList = fetcher.discoverCoreTopRated
-//            var discoverAiringTodayList = fetcher.discoverCoreAiringToday
-//
-//            let count = try managedContext.count(for: fetchRequest)
-//            if(count == 0){
-//
-//                let show = Series()
-//                var singleShow = Series()
-//
-//
-//                if categoryControl.selectedSegmentIndex == 0 {
-//                    singleShow = discoverMostPopular[indexPath.row]
-//                }
-//                else if categoryControl.selectedSegmentIndex == 1 {
-//                    singleShow = discoverTopRated[indexPath.row]
-//                }
-//                else if categoryControl.selectedSegmentIndex == 2 {
-//                    singleShow = discoverAiringToday[indexPath.row]
-//                }
-//
-//                // let singleShow = discoverMostPopular[indexPath.row]
-//                let showCoverUrl = URL(string: singleShow.imageURL)
-//
-//                cell.cellTitle.text = singleShow.title
-//                cell.cellImage.kf.setImage(with: showCoverUrl)
-//                cell.cellSummary.text = singleShow.description
-//
-//                print("FROM API")
-//                return cell
-//
-//            }
-//            else{
-//
-//                savedInCoreList = try managedContext.fetch(fetchRequest) as! [SeriesCore]
-//                let show = SeriesCore()
-//                var singleShow = SeriesCore()
-//
-//                singleShow = savedInCoreList[indexPath.row]
-//
-//                // let singleShow = discoverMostPopular[indexPath.row]
-//                let showCoverUrl = URL(string: singleShow.imageURL!)
-//
-//                cell.cellTitle.text = singleShow.title
-//                cell.cellImage.kf.setImage(with: showCoverUrl)
-//                cell.cellSummary.text = "FROMAPI"
-//
-//                print("FROM CORE")
-//                return cell
-//
-//
-//            }
-//        }
-//        catch let error as NSError {
-//            print("Could not fetch \(error), \(error.userInfo)")
-//        }
-//
-//        return cell
-        
-        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -307,7 +187,6 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         var discoverMostPopularList = fetcher.discoverMostPopular
         var discoverTopRatedList = fetcher.discoverTopRated
         var discoverAiringTodayList = fetcher.discoverAiringToday
-        
         
         
         
@@ -322,11 +201,6 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
         destinationVC?.selectedShowFeaturedImage = tapShowFeaturedImageUrl
         destinationVC?.selectedShowTitle = tapShowTitle
         destinationVC?.selectedShowId = tapShowId
-        
-////        getSelectedShowInfos(showId: tapsShowId)
-//        destinationVC?.selectedShowSeasons = tapShowSeasonsNumber
-        
-        
         
     }
     
@@ -390,7 +264,6 @@ class DiscoverController: UIViewController, UITableViewDataSource, UITableViewDe
                 let seriesResult = seriesJSON["results"].dictionaryObject
                 
                 let stackResult = JSON(response.result.value!).dictionaryObject
-                let dataStack = DataStack(modelName: "Seriyal_2")
                 
                 //let seriesCore = seriesResult as! [String: Any]
 

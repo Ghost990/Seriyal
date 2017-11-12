@@ -17,8 +17,6 @@ target 'Seriyal-2' do
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
-  pod 'Groot'
-  pod 'AlamofireCoreData'
-  pod 'Sync'  
+  pod 'Segmentio', '~> 2.1'
 
 end

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8BF7A869760E81F96A5136ED4512BD76"
+               BlueprintIdentifier = "BDEC68E892D33202BAE290218A5A6291"
                BuildableName = "UINavigationBar_Transparent.framework"
                BlueprintName = "UINavigationBar-Transparent"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -47,7 +47,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8BF7A869760E81F96A5136ED4512BD76"
+            BlueprintIdentifier = "BDEC68E892D33202BAE290218A5A6291"
             BuildableName = "UINavigationBar_Transparent.framework"
             BlueprintName = "UINavigationBar-Transparent"
             ReferencedContainer = "container:Pods.xcodeproj">

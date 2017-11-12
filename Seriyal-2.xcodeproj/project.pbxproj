@@ -20,6 +20,12 @@
 		E55F35F11FAE53CF0090A5D3 /* hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55F35F01FAE53CF0090A5D3 /* hashable.swift */; };
 		E55F35F41FAE5A200090A5D3 /* searchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55F35F21FAE5A200090A5D3 /* searchCell.swift */; };
 		E55F35F51FAE5A200090A5D3 /* searchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55F35F31FAE5A200090A5D3 /* searchCell.xib */; };
+		E56D3ABD1FB86A89008BA724 /* discoverCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D3ABC1FB86A89008BA724 /* discoverCollectionController.swift */; };
+		E56D3ABF1FB86B1C008BA724 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D3ABE1FB86B1C008BA724 /* TableViewCell.swift */; };
+		E56D3AC11FB86CDE008BA724 /* Randomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D3AC01FB86CDE008BA724 /* Randomizer.swift */; };
+		E56D3AC61FB873E2008BA724 /* CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D3AC41FB873E2008BA724 /* CollectionCell.swift */; };
+		E56D3AC71FB873E2008BA724 /* CollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56D3AC51FB873E2008BA724 /* CollectionCell.xib */; };
+		E56D3AC91FB886A4008BA724 /* DiscoverCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D3AC81FB886A4008BA724 /* DiscoverCollectionViewController.swift */; };
 		E56D76451F9E472800212318 /* seriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D76431F9E472800212318 /* seriesCell.swift */; };
 		E56D76461F9E472800212318 /* seriesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56D76441F9E472800212318 /* seriesCell.xib */; };
 		E56D76481F9E48EF00212318 /* Series.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D76471F9E48EE00212318 /* Series.swift */; };
@@ -55,6 +61,12 @@
 		E55F35F01FAE53CF0090A5D3 /* hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hashable.swift; sourceTree = "<group>"; };
 		E55F35F21FAE5A200090A5D3 /* searchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = searchCell.swift; sourceTree = "<group>"; };
 		E55F35F31FAE5A200090A5D3 /* searchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = searchCell.xib; sourceTree = "<group>"; };
+		E56D3ABC1FB86A89008BA724 /* discoverCollectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = discoverCollectionController.swift; sourceTree = "<group>"; };
+		E56D3ABE1FB86B1C008BA724 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		E56D3AC01FB86CDE008BA724 /* Randomizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Randomizer.swift; sourceTree = "<group>"; };
+		E56D3AC41FB873E2008BA724 /* CollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCell.swift; sourceTree = "<group>"; };
+		E56D3AC51FB873E2008BA724 /* CollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionCell.xib; sourceTree = "<group>"; };
+		E56D3AC81FB886A4008BA724 /* DiscoverCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverCollectionViewController.swift; sourceTree = "<group>"; };
 		E56D76431F9E472800212318 /* seriesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = seriesCell.swift; sourceTree = "<group>"; };
 		E56D76441F9E472800212318 /* seriesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = seriesCell.xib; sourceTree = "<group>"; };
 		E56D76471F9E48EE00212318 /* Series.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Series.swift; sourceTree = "<group>"; };
@@ -159,6 +171,8 @@
 				E5E7BDD31FAD07D4005AC4AB /* FavoritesController.swift */,
 				E5E7BDD51FAD0841005AC4AB /* UpcomingController.swift */,
 				E55F35EE1FAE0ADF0090A5D3 /* SearchController.swift */,
+				E56D3ABC1FB86A89008BA724 /* discoverCollectionController.swift */,
+				E56D3AC81FB886A4008BA724 /* DiscoverCollectionViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -172,6 +186,9 @@
 				E5374F141FA4B04B00363BD5 /* Colorize.swift */,
 				E55F35F21FAE5A200090A5D3 /* searchCell.swift */,
 				E55F35F31FAE5A200090A5D3 /* searchCell.xib */,
+				E56D3ABE1FB86B1C008BA724 /* TableViewCell.swift */,
+				E56D3AC41FB873E2008BA724 /* CollectionCell.swift */,
+				E56D3AC51FB873E2008BA724 /* CollectionCell.xib */,
 			);
 			path = extend;
 			sourceTree = "<group>";
@@ -190,6 +207,7 @@
 				E57DD0EB1FA7A82100D1BE27 /* dateFormatter.swift */,
 				E55F35F01FAE53CF0090A5D3 /* hashable.swift */,
 				E5BD0B751FB47589009C25E9 /* Fetcher.swift */,
+				E56D3AC01FB86CDE008BA724 /* Randomizer.swift */,
 			);
 			path = extend;
 			sourceTree = "<group>";
@@ -271,6 +289,7 @@
 				E55E31B51F9E44A8006DD337 /* Main.storyboard in Resources */,
 				E55F35F51FAE5A200090A5D3 /* searchCell.xib in Resources */,
 				E5B1C08E1FACB44D002682B9 /* GoogleService-Info.plist in Resources */,
+				E56D3AC71FB873E2008BA724 /* CollectionCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,16 +337,14 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Seriyal-2/Pods-Seriyal-2-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/AlamofireCoreData/AlamofireCoreData.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireNetworkActivityIndicator/AlamofireNetworkActivityIndicator.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/Segmentio/Segmentio.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftDate/SwiftDate.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/Sync/Sync.framework",
 				"${BUILT_PRODUCTS_DIR}/UIImageColors/UIImageColors.framework",
 				"${BUILT_PRODUCTS_DIR}/UINavigationBar-Transparent/UINavigationBar_Transparent.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
@@ -336,16 +353,14 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireCoreData.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireNetworkActivityIndicator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Segmentio.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftDate.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sync.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImageColors.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UINavigationBar_Transparent.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
@@ -367,6 +382,7 @@
 				E57DD0EC1FA7A82100D1BE27 /* dateFormatter.swift in Sources */,
 				E5E7BDD41FAD07D4005AC4AB /* FavoritesController.swift in Sources */,
 				E55F35F41FAE5A200090A5D3 /* searchCell.swift in Sources */,
+				E56D3AC91FB886A4008BA724 /* DiscoverCollectionViewController.swift in Sources */,
 				E5374F151FA4B04B00363BD5 /* Colorize.swift in Sources */,
 				E55E31B81F9E44A8006DD337 /* Seriyal_2.xcdatamodeld in Sources */,
 				E55E31B21F9E44A8006DD337 /* DiscoverController.swift in Sources */,
@@ -374,14 +390,18 @@
 				E55E31B01F9E44A8006DD337 /* AppDelegate.swift in Sources */,
 				E56D764D1F9E4CFA00212318 /* api.swift in Sources */,
 				E55F35F11FAE53CF0090A5D3 /* hashable.swift in Sources */,
+				E56D3AC61FB873E2008BA724 /* CollectionCell.swift in Sources */,
 				E5E7BDD61FAD0841005AC4AB /* UpcomingController.swift in Sources */,
 				E55F35EF1FAE0ADF0090A5D3 /* SearchController.swift in Sources */,
 				E5BD0B761FB47589009C25E9 /* Fetcher.swift in Sources */,
 				E5B1155D1FACBB7E00971218 /* RegisterController.swift in Sources */,
 				E5B1155F1FACBB8E00971218 /* WelcomeController.swift in Sources */,
 				E5E7BDD21FACFEB4005AC4AB /* SettingsController.swift in Sources */,
+				E56D3ABF1FB86B1C008BA724 /* TableViewCell.swift in Sources */,
 				E513E6861FA49B630076D59A /* SingleController.swift in Sources */,
 				E575B4CD1FA63EE800B01D02 /* gradient.swift in Sources */,
+				E56D3ABD1FB86A89008BA724 /* discoverCollectionController.swift in Sources */,
+				E56D3AC11FB86CDE008BA724 /* Randomizer.swift in Sources */,
 				E56D76481F9E48EF00212318 /* Series.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,6 +1,0 @@
-framework module AlamofireCoreData {
-  umbrella header "AlamofireCoreData-umbrella.h"
-
-  export *
-  module * { export * }
-}
