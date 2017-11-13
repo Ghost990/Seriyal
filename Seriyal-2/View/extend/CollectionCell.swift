@@ -27,7 +27,7 @@ class CollectionCell: UICollectionViewCell {
         collectionCard.layer.cornerRadius = cornerRadius
         collectionCard.layer.shadowColor = UIColor.black.cgColor
         collectionCard.layer.shadowOffset = CGSize(width: 0, height: 2)
-        collectionCard.layer.shadowOpacity = 0.2
+        collectionCard.layer.shadowOpacity = 0.6
         collectionCard.layer.shadowRadius = 4
         
         collectionImage.layer.cornerRadius = cornerRadius

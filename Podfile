@@ -18,5 +18,6 @@ target 'Seriyal-2' do
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
   pod 'Segmentio', '~> 2.1'
+  pod 'HexColors'
 
 end

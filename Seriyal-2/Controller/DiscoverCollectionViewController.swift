@@ -11,6 +11,7 @@ import Kingfisher
 import CoreData
 import Segmentio
 import UIImageColors
+import HexColors
 
 class DiscoverCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -19,6 +20,8 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
     @IBOutlet weak var collectionView: UICollectionView!
     var fetcher = Fetcher()
     var shows : [SeriesCore] = []
+    let darkSecondary = UIColor("#202020")
+    let indicatorColor = UIColor("#C6340B")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +52,8 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
         }
         
         //navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.barTintColor = darkSecondary!
+        navigationController?.navigationBar.isTranslucent = false
         
     }
     
@@ -113,20 +118,20 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
         content.append(topRatedItem)
         content.append(airingTodayItem)
         
-        let indicatorOptions = SegmentioIndicatorOptions(type: .bottom, ratio: 0.5, height: 2, color: UIColor.gray)
+        let indicatorOptions = SegmentioIndicatorOptions(type: .bottom, ratio: 0.5, height: 2, color: indicatorColor!)
         let horizontalSeparator = SegmentioHorizontalSeparatorOptions(type: SegmentioHorizontalSeparatorType.bottom, height: 0.1, color: UIColor.black)
-        let verticalSeparator = SegmentioVerticalSeparatorOptions(ratio: 0.7, color: UIColor.lightGray)
+        let verticalSeparator = SegmentioVerticalSeparatorOptions(ratio: 0.7, color: UIColor.darkGray)
         
         let states = SegmentioStates(
             defaultState: SegmentioState(
                 backgroundColor: .clear,
                 titleFont: UIFont.systemFont(ofSize: 12),
-                titleTextColor: .gray
+                titleTextColor: .lightGray
             ),
             selectedState: SegmentioState(
                 backgroundColor: .clear,
                 titleFont: UIFont.systemFont(ofSize: 12, weight: UIFont.Weight(rawValue: 100)),
-                titleTextColor: .black
+                titleTextColor: .white
             ),
             highlightedState: SegmentioState(
                 backgroundColor: UIColor.lightGray.withAlphaComponent(0.6),
@@ -135,7 +140,7 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
             )
         )
         
-        let options = SegmentioOptions(backgroundColor: UIColor.white, maxVisibleItems: 3, scrollEnabled: false, indicatorOptions: indicatorOptions, horizontalSeparatorOptions: horizontalSeparator, verticalSeparatorOptions: verticalSeparator, imageContentMode: .center, labelTextAlignment: NSTextAlignment.center, labelTextNumberOfLines: 1, segmentStates: states, animationDuration: 0.3)
+        let options = SegmentioOptions(backgroundColor: darkSecondary!, maxVisibleItems: 3, scrollEnabled: false, indicatorOptions: indicatorOptions, horizontalSeparatorOptions: horizontalSeparator, verticalSeparatorOptions: verticalSeparator, imageContentMode: .center, labelTextAlignment: NSTextAlignment.center, labelTextNumberOfLines: 1, segmentStates: states, animationDuration: 0.3)
         
         segmentioView.setup(
             content: content,

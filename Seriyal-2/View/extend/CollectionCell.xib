@@ -28,11 +28,8 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rick.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="f0N-MU-58O">
                                 <rect key="frame" x="0.0" y="0.0" width="133" height="197"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="197" id="gQv-by-cdX"/>
-                                </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wOA-L3-nj3">
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wOA-L3-nj3">
                                 <rect key="frame" x="5" y="205" width="123" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="f44-XN-dJz"/>
