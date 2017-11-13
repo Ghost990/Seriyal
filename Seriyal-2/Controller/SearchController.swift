@@ -80,11 +80,11 @@ class SearchController: UIViewController, UITableViewDataSource, UITableViewDele
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        let destinationVC = segue.destination as? SingleController
-        destinationVC?.selectedShowDescription = tapShowDescription
-        destinationVC?.selectedShowFeaturedImage = tapShowFeaturedImageUrl
-        destinationVC?.selectedShowTitle = tapShowTitle
-        destinationVC?.selectedShowId = tapShowId
+//        let destinationVC = segue.destination as? SingleController
+//        destinationVC?.selectedShowDescription = tapShowDescription
+//        destinationVC?.selectedShowFeaturedImage = tapShowFeaturedImageUrl
+//        destinationVC?.selectedShowTitle = tapShowTitle
+//        destinationVC?.selectedShowId = tapShowId
        
         
     }

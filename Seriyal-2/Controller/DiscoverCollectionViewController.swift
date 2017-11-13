@@ -86,6 +86,7 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         getSelectedShowId(indexPath: indexPath)
+        performSegue(withIdentifier: "fromShowToSingle", sender: self)
     }
     
     func getSelectedShowId(indexPath: IndexPath) {
