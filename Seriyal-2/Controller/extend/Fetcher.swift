@@ -113,6 +113,29 @@ class Fetcher {
         }
     }
     
+    func fetchForSingle(id: String) {
+        
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
+        
+        let filter = id
+        let predicate = NSPredicate(format: "id = %@", filter)
+        fetchRequest.predicate = predicate
+        
+        do {
+            let shows = try managedContext.fetch(fetchRequest) as! [SeriesCore]
+            print("single show: \(shows.first?.title)")
+        } catch {
+            debugPrint("COULD NOT FETCH")
+        }
+        
+    }
+    
+    private func fillSingle(id: String) {
+        let show = SeriesCore()
+        
+    }
+    
     func fetchFromCore(filter: String) {
         
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }

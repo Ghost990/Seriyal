@@ -21,8 +21,7 @@ import CoreData
 
 class SingleController: UIViewController, UIScrollViewDelegate {
     
-    var selectedShowId = ""
-    
+    let fetcher = Fetcher()
     @IBOutlet weak var singleShowTitle: UILabel!
     @IBOutlet weak var singleViewImage: UIImageView!
     @IBOutlet weak var singleViewDescription: UILabel!
@@ -46,14 +45,13 @@ class SingleController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var nextEpisodeTitle: UILabel!
     @IBOutlet weak var episodeSeparator: UIView!
     
-    
-    
     var singleShowId = ""
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print(singleShowId)
+        fetcher.fetchForSingle(id: singleShowId)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 }

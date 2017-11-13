@@ -22,6 +22,7 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
     var shows : [SeriesCore] = []
     let darkSecondary = UIColor("#202020")
     let indicatorColor = UIColor("#C6340B")
+    var selectedShowCoreId = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,6 +90,11 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
         performSegue(withIdentifier: "fromShowToSingle", sender: self)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let singleVC = segue.destination as? SingleController
+        singleVC?.singleShowId = selectedShowCoreId
+    }
+    
     func getSelectedShowId(indexPath: IndexPath) {
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
@@ -96,11 +102,7 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
         do {
             shows = try managedContext.fetch(fetchRequest) as! [SeriesCore]
             let show = shows[indexPath.row]
-            var selectedShowCoreId = show.id
-            
-            let singleVC = SingleController()
-            singleVC.singleShowId = selectedShowCoreId!
-            print(selectedShowCoreId)
+            selectedShowCoreId = show.id!
         } catch {
             debugPrint("COULD NOT FETCH")
         }
