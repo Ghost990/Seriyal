@@ -84,6 +84,27 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        getSelectedShowId(indexPath: indexPath)
+    }
+    
+    func getSelectedShowId(indexPath: IndexPath) {
+        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SeriesCore")
+        
+        do {
+            shows = try managedContext.fetch(fetchRequest) as! [SeriesCore]
+            let show = shows[indexPath.row]
+            var selectedShowCoreId = show.id
+            
+            let singleVC = SingleController()
+            singleVC.singleShowId = selectedShowCoreId!
+            print(selectedShowCoreId)
+        } catch {
+            debugPrint("COULD NOT FETCH")
+        }
+    }
+    
     func setupCell() {
         self.collectionView.register(UINib(nibName: "CollectionCell", bundle: nil), forCellWithReuseIdentifier: "CollectionCell")
         

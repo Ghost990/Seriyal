@@ -70,6 +70,8 @@ class SingleController: UIViewController, UIScrollViewDelegate {
     
     var savedShow = [SeriesCore]()
     
+    var singleShowId = ""
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -162,6 +162,7 @@ class Fetcher {
             show.imageURL = coreShow.imageURL
             show.summary = coreShow.description
             show.onList = showCategory
+            show.id = showId
         }
         
         
