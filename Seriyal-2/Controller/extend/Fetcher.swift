@@ -124,7 +124,10 @@ class Fetcher {
         
         do {
             let shows = try managedContext.fetch(fetchRequest) as! [SeriesCore]
-            print("single show: \(shows.first?.title)")
+            let show = shows.first
+            showTitle = (show?.title)!
+            showDescription = (show?.summary)!
+            showImageUrl = (show?.imageURL)!
         } catch {
             debugPrint("COULD NOT FETCH")
         }

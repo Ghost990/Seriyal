@@ -258,9 +258,7 @@
                         <outlet property="singleShowBackground" destination="KsL-MF-SVi" id="m2I-F4-elo"/>
                         <outlet property="singleShowCover" destination="TDt-q0-Q7h" id="1hU-yU-Pvp"/>
                         <outlet property="singleShowEpisodes" destination="r9I-8O-6OU" id="IjR-rl-Hqe"/>
-                        <outlet property="singleShowRuntime" destination="PtH-xB-QkT" id="keo-vI-Tb7"/>
                         <outlet property="singleShowSeasons" destination="wvI-bm-2rQ" id="Ch3-9Z-QDv"/>
-                        <outlet property="singleShowTitle" destination="5cr-eP-lyI" id="PmH-1T-cvG"/>
                         <outlet property="singleViewDescription" destination="FeF-R8-Aw9" id="ovX-Gb-lLs"/>
                         <outlet property="singleViewImage" destination="p9j-6H-RqM" id="YOE-xA-8qq"/>
                         <outlet property="singleViewNextEpisodeLabel" destination="QY9-ig-ejA" id="qQo-fX-8J2"/>
