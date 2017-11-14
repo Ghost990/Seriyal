@@ -134,11 +134,6 @@ class Fetcher {
         
     }
     
-    private func fillSingle(id: String) {
-        let show = SeriesCore()
-        
-    }
-    
     func fetchFromCore(filter: String) {
         
         guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }

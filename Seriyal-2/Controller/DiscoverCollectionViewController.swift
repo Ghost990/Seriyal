@@ -20,6 +20,7 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
     @IBOutlet weak var collectionView: UICollectionView!
     var fetcher = Fetcher()
     var shows : [SeriesCore] = []
+    let barDark = UIColor("#1C1C1C")
     let darkSecondary = UIColor("#202020")
     let indicatorColor = UIColor("#C6340B")
     var selectedShowCoreId = ""
@@ -52,7 +53,7 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
             debugPrint("COULD NOT FETCH")
         }
         
-        //navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.barTintColor = darkSecondary!
         navigationController?.navigationBar.isTranslucent = false
         
@@ -201,8 +202,8 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
     }
     
     func resetColors() {
-        self.navigationController?.navigationBar.tintColor = UIColor.black
-        self.navigationController?.navigationBar.barTintColor = UIColor.white
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationController?.navigationBar.barTintColor = barDark
     }
     
     func fillCollection(onList: String, filterBy: String, indexPath: IndexPath) -> UICollectionViewCell {
@@ -223,6 +224,7 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
                         apiShow = discoverMostPopularList[indexPath.row]
                         
                         let singleImageUrl = URL(string: apiShow.imageURL)
+                        cell.collectionImage.kf.indicatorType = .activity
                         cell.collectionImage.kf.setImage(with: singleImageUrl)
                         cell.collectionLabel.text = apiShow.title
                     }
@@ -232,10 +234,20 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
                 let show = shows[indexPath.row]
                 
                 let singleImageUrl = URL(string: show.imageURL!)
+                cell.collectionImage.kf.indicatorType = .activity
                 cell.collectionImage.kf.setImage(with: singleImageUrl)
                 cell.collectionLabel.text = show.title
                 
-                let image = singleImageUrl
+//                ImageCache.default.retrieveImage(forKey: show.id!, options: nil) {
+//                    savedImage, cacheType in
+//                    if let savedImage = savedImage {
+//                        print("Get image \(savedImage), cacheType: \(cacheType).")
+//                    } else {
+//                        print("Not exist in cache.")
+//                    }
+//                }
+                
+                //let imageUrl = singleImageUrl
                 ImageDownloader.default.downloadImage(with: singleImageUrl!, options: [], progressBlock: nil) {
                     (image, error, url, data) in
     
@@ -259,6 +271,9 @@ class DiscoverCollectionViewController: UIViewController, UICollectionViewDelega
         return cell
     }
     
+    func cacheImage(imageToCache: UIImage, keyForImage: String) {
+        let image: UIImage = imageToCache
+        ImageCache.default.store(image, forKey: keyForImage)
+    }
     
-
 }

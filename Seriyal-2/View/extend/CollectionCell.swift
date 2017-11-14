@@ -9,6 +9,7 @@
 import UIKit
 import UIImageColors
 
+
 class CollectionCell: UICollectionViewCell {
     
     
@@ -33,4 +34,6 @@ class CollectionCell: UICollectionViewCell {
         collectionImage.layer.cornerRadius = cornerRadius
         collectionImage.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
     }
+    
+    
 }
